@@ -59,73 +59,79 @@
     {
         \AtPageUpperLeft
         {
-            \hspace{0.9cm}
-            \parbox[t][2cm][b]{\textwidth}
-            {
-                \includegraphics[height = 1cm]{OM-images/OM-logo.pdf}
-            }
         }
 
         \AtPageLowerLeft
         {
-            \hspace{0.9cm}
-            \parbox[b][0.12\paperheight][t]{\textwidth}
+            \hspace{0.3cm}
+            \parbox[b][3.6cm][t]{\textwidth}
             {
-                \includegraphics[height = 0.05\paperheight]
-                {OM-images/OM-signature.pdf}
+                \rotatebox{90}{\includegraphics[height = 1cm]{OM-images/logo_neg}}
             }
+            % \hspace{0.9cm}
+            % \parbox[b][0.12\paperheight][t]{\textwidth}
+            % {
+                % \includegraphics[height = 0.05\paperheight]
+                % {OM-images/OM-signature.pdf}
+            % }
         }
         \AtPageUpperLeft
         {
-            \makebox[\paperwidth][r]
-            {
-                \parbox[t][\paperheight][b]{4cm}
-                {%
-                    \includegraphics[height = \paperheight]
-                    {OM-images/OM-pipe.jpg}
-                }%
-            }
+            % \makebox[\paperwidth][r]
+            % {
+            %     \parbox[t][\paperheight][b]{4cm}
+            %     {%
+            %         \includegraphics[height = \paperheight]
+            %         {OM-images/fondo_portada.png}
+            %     }%
+            % }
         }
         \AtPageLowerLeft
         {
-            \makebox[\paperwidth][r]
-            {
-                \parbox[b][0.2cm][t]{4cm}
-                {
-                    \centering
-                    \usebeamercolor[fg]{local structure}
-                    \resizebox{2cm}{!}
-                    {\OMphoto{}: Ronny Østnes / OsloMet}
-                }
-            }
+            % \makebox[\paperwidth][r]
+            % {
+            %     \parbox[b][0.2cm][t]{4cm}
+            %     {
+                    % \centering
+                    % \usebeamercolor[fg]{local structure}
+                    % \resizebox{2cm}{!}
+                    % {\OMphoto{}: Ronny Østnes / OsloMet}
+            %     }
+            % }
         }
     }
 
-    \vspace{2cm}
-    \hspace*{0pt}
-    \begin{minipage}[b][\paperheight - 3cm]{\paperwidth - 5.3cm}
+    \vspace{1cm}
+    \hspace*{2cm}
+    \begin{minipage}[b][\paperheight - 2cm]{\paperwidth - 4.3cm}
         \raggedright
 
         \vspace{\stretch{0.5}}
 
         \usebeamerfont{title}
         \inserttitle
-        \\[0.2ex]
+        \\[0.6ex]
         \usebeamerfont{subtitle}
+        {
+        \setstretch{.9}
         \insertsubtitle
+        }
 
         \vspace{\stretch{1}}
 
         \usebeamerfont{author}
         \insertauthor
 
-        \vspace{0.135\paperheight}
+        \vspace{0.035\paperheight}
     \end{minipage}
 }
 
 \newcommand{\TitlePage}
 {{
     \setbeamercolor{background canvas}{parent = title page}
+    \setbeamertemplate{background}{
+        \hspace*{2cm}\includegraphics[height=\paperheight]{OM-images/fondo_portada.png}
+    }
     \begin{frame}[b, plain, noframenumbering]
         \titlepage
     \end{frame}
