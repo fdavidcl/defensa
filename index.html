@@ -6,6 +6,37 @@
   <meta name="duration" content="45" />
   <link rel=stylesheet href="simple.css">
   <script src="b6plus.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Rubik:ital,wght@0,400;0,600;1,400;1,600&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+
+<!--
+  Slide transitions =========================  
+fade-in
+    The new slide appears faint at first and gets more opaque until it completely obscures the previous slide.
+slide-in
+    The new slide moves in from the left, while the previous slide moves back to the left.
+move-left
+    The new slides move in from the right while the old slide moves out to the left.
+move-up
+    The old slide moves up and the new slide moves in from the bottom.
+flip-up
+    A 3D effect: the bottom of the old slide is lifted up and the slide is turned over to reveal the new slide on its back side.
+flip-left
+    Another 3D effect, but in this case the right side of the slide is lifted up and the slide is flipped over to the left, revealing the new slide on the back side.
+center-out
+    A small circle appears in the middle of the old slide that reveals the new slide. The circle grows until it covers the whole slide.
+wipe-left
+    The new slide moves in from the right, until it covers the old slide.
+zigzag-left
+    A zigzag pattern moves in from the right. To the left is the old slide, to the right the new one.
+zigzag-right
+    A zigzag pattern moves in from the left. To the left is the new slide, to the right the old one.
+cut-in
+    The new slide moves in from the top left and covers the old slide. 
+-->
+
 
  <body class="fade-in hidemouse=1.5">
 
@@ -17,6 +48,13 @@
     Leaving presentation mode.
   </section>
 
+  <section class="comment small">
+
+    Para iniciar la presentación, haz <a href="?full">clic aquí</a> o <b>doble clic</b> en cualquiera de las diapositivas. Para navegar por las diapositivas, puedes utilizar las flechas del teclado.
+    <p>
+      Esta presentación ha sido compuesta utilizando el <a href="https://www.w3.org/Talks/Tools/b6plus/">motor B6+ del W3C</a>, con scripts y estilos modificados por David Charte. Consulta el <a href="https://github.com/fdavidcl/defensa">código fuente en GitHub</a>.
+    </p>
+  </section>
 
   <section class="cover slide clear titleslide flex" id=cover>
     <div class="left-side vertical-logo">
@@ -47,7 +85,14 @@
     </div>
   </section>
 
-  <section class="cover slide clear" id="intro">
+  <section class="slide clear">
+    <h1>Índice</h1>
+    <ol class="maketoc"></ol>
+  </section>
+
+  <section class="cover slide clear " id="intro">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
     <h1>Introducción</h1>
   </section>
 
@@ -78,10 +123,10 @@
   <section class="slide section level2">
       <h1>Objetivos</h1>
       <ul class="incremental">
-          <li> Estudio teórico y producción de recursos sobre <i>autoencoders</i>
-          <li> Desarrollo de implementaciones de <i>autoencoders</i> accesibles
-          <li> Exploración de aplicaciones de los modelos basados en <i>autoencoders</i> y de problemas supervisados donde pueden tener potencial
-          <li> Diseño de soluciones basadas en <i>autoencoders</i> para el tratamiento de problemas supervisados
+          <li>Estudio teórico y producción de recursos sobre <i>autoencoders</i>
+          <li>Desarrollo de implementaciones de <i>autoencoders</i> accesibles
+          <li>Exploración de aplicaciones de los modelos basados en <i>autoencoders</i> y de problemas supervisados donde pueden tener potencial
+          <li>Diseño de soluciones basadas en <i>autoencoders</i> para el tratamiento de problemas supervisados
       </ul>
   </section>
   <section class="slide section level2" id="quees">
@@ -90,16 +135,23 @@
   </section>
 
 
-  <section class="slide cover" id="a1s1">
-    <div class="flex">
-      <h1>A practical tutorial on autoencoders</h1>
-      <img class="preview" src="images/paper1.png">
+  <section class="slide cover clear" id="a1s1">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
+    <div>
+      <div class="flex">
+        <h1>Tutorial práctico sobre autoencoders</h1>
+      </div>
+      <blockquote>
+        Charte, D., Charte, F., García, S., del Jesus, M. J., & Herrera, F. (2018). A practical tutorial on autoencoders for nonlinear feature fusion: Taxonomy, models, software and guidelines. <i>Information Fusion</i>, 44, 78-96.
+      </blockquote>
+      <!--ul>
+        <li>Taxonomía</li>
+        <li>Variantes</li>
+        <li>Aplicaciones</li>
+      </ul-->
     </div>
-    <ul>
-      <li>Taxonomía</li>
-      <li>Variantes</li>
-      <li>Aplicaciones</li>
-    </ul>
+    <img class="preview" src="images/paper1.png">
   </section>
 
   <section class="slide" id="a1s2">
@@ -166,7 +218,7 @@
     <div class="">
       <div>
         <h3>Denoising autoencoder</h3>
-        Entrena con instancias ruidosas
+        Aprende a restaurar <strong>instancias ruidosas</strong>
 
         $$\mathcal J_{\mathrm{DAE}}(W,b;S)= \sum_{x\in S}\mathbb E_{\tilde x \sim q(\tilde x \vert x)} \left[\mathcal L(x, (g\circ f)(\tilde x))\right]$$
 
@@ -174,7 +226,7 @@
       </div>
       <div>
         <h3>Robust autoencoder</h3>
-        Correntropía: función objetivo menos sensible a ruido
+        <strong>Correntropía</strong>: función objetivo menos sensible a ruido
         $$\mathcal L_{\mathrm{MCC}}(u, v)=-\sum_{k=1}^d\mathcal K_{\sigma}(u_k-v_k),\text{ donde } \mathcal K_{\sigma}(\alpha)=\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{\alpha^2}{2\sigma^2}\right),$$
       
 y \(\sigma\) es parámetro de \(\mathcal K\).
@@ -207,6 +259,173 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
     <h1>Guía de diseño de autoencoders</h1>
     <img src="images/guidelines.png">
   </section>
+
+  <section class="slide cover clear" id="a4s1">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
+    <div>
+      <h1>Aplicaciones de  autoencoders en aprendizaje de representaciones</h1>
+      <blockquote>
+        Charte, D., Charte, F., del Jesus, M. J., & Herrera, F. (2020). An analysis on the use of autoencoders for representation learning: Fundamentals, learning task case studies, explainability and challenges. <i>Neurocomputing</i>, 404, 93-107.
+      </blockquote>
+    </div>
+    <img class="preview" src="images/paper4.png">
+  </section>
+
+  <section class="slide cover clear" id="a2s1">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
+    <div>
+      <h1>Software para autoencoders en R: Ruta</h1>
+      <blockquote>
+        Charte, D., Herrera, F., & Charte, F. (2019). Ruta: Implementations of neural autoencoders in R. <i>Knowledge-Based Systems</i>, 174, 4-8.
+      </blockquote>
+    </div>
+    <img class="preview" src="images/paper2.png">
+  </section>
+
+  <section class="slide" id="a2s2">
+    <h1>Software previo para AEs</h1>
+    <div class="flex">
+      <div>
+        <b>Bibliotecas de cálculo tensorial</b> (PyTorch, Tensorflow)
+        <ul>
+          <li>Barrera de acceso: APIs complejas</li>
+          <li>Extracción de características difícil</li>
+          <li>Implementación manual de muchas funciones</li>
+        </ul><p></p>
+        <b>Implementaciones de autoencoders</b>
+        <ul>
+          <li>Autoencoder (R): básico/sparse</li>
+          <li>SAENET (R): sparse/stacked</li>
+          <li>H2O (Java/R): básico</li>
+          <li>yadlt (python): básico/denoising</li>
+        </ul>
+      </div>
+      <img src="images/tensorflowae.png" style="height: 20em">
+    </div><p></p>
+
+    <div class="box">Es necesaria una implementación <b>accesible y versátil</b> de autoencoders</div>
+  </section>
+
+  <section class="slide" id="a2s3">
+    <h1>Arquitectura y funcionalidad</h1>
+    <h3>Clases definidas</h3>
+    <ul>
+      <li><code>ruta_autoencoder</code>: modelo de aprendizaje <br> puede <strong>entrenarse, codificar y reconstruir</strong></li>
+      <li><code>ruta_network</code>: estructura de capas neuronales <br>pueden <strong>concatenarse</strong></li>
+      <li><code>ruta_loss</code>: función a optimizar (interna a Keras o externa: correntropía)</li>
+      <li><code>ruta_noise</code>: un tipo de ruido aplicable a datos de entrada</li>
+    </ul>
+    <h3>Funcionalidades</h3>
+    <ul>
+      <li>Definir y personalizar aspectos de un modelo AE</li>
+      <li>Entrenar diferentes variantes de AE según varias funciones objetivo</li>
+      <li>Codificar y reconstruir datos</li>
+      <li>Evaluar un modelo con métricas de calidad</li>
+      <li>Muestrear modelos generativos (variacionales)</li>
+    </ul>
+
+  </section>
+
+  <section class="slide" id="a2s4">
+    <h1>Detalles de implementación</h1>
+    <ul>
+      <li>Lenguaje: <b>R</b></li>
+      <li>Biblioteca de cálculo: <b>Tensorflow/Keras</b></li>
+      <li>Código fuente: <a href="https://github.com/fdavidcl/ruta">github.com/fdavidcl/ruta</a></li>
+      <li>Documentación: <a href="https://ruta.software">ruta.software</a></li>
+    </ul>
+    <div class="flex">
+      <div>
+
+        <h3>Variantes de AE implementadas</h3>
+        <ul>
+          <li>básico</li>
+          <li>sparse</li>
+          <li>contractive</li>
+          <li>denoising</li>
+          <li>robust</li>
+          <li>variational</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Tipos de capas</h3>
+        <ul>
+          <li>densas</li>
+          <li>convolucionales (1D, 2D, 3D)</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="slide" id="a2s5">
+    <h1>Ejemplos de uso</h1>
+    <h3>Entrenamiento y codificación</h3>
+    <pre><code class="language-r">encoded <- iris[, 1:4] %>% as.matrix() %>% 
+  autoencode(2, "robust")</code></pre>
+    <h3>Definición de una red, reconstrucción, evaluación</h3>
+    <pre><code class="language-r">learner <- autoencoder_sparse(
+  input() + dense(3, "tanh") + output(),
+  "mean_squared_error"
+)
+model <- train(learner, train_x, epochs = 200)
+reconstructions <- reconstruct(model, test_x)
+evaluate_mean_squared_error(model, test_x)</code></pre>
+  </section>
+
+  <section class="slide" id="a2s6">
+    <h1>Ejemplo AE variacional</h1>
+    <pre><code class="language-r">network <-
+  input() +
+  dense(256, "elu") +
+  variational_block(10, seed = 42) +
+  dense(256, "elu") +
+  output("sigmoid")
+learner <- autoencoder_variational(network, 
+  loss = "binary_crossentropy")
+model <- train(learner, x_train, epochs = 10)
+
+samples <- model %>% generate(dimensions = c(8, 5), 
+  side = 6, fixed_values = 0.99)
+plot_matrix(samples)</code></pre>
+<img src="images/rutavariational.png" alt="Muestreo de dígitos de la codificación aprendida desde MNIST con un autoencoder variacional" style="height: 6em">
+  </section>
+
+
+  <section class="slide cover clear" id="a3s1">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
+    <div>
+      <h1>Problemas no estándares en aprendizaje supervisado</h1>
+      <blockquote>
+        Charte, D., Charte, F., García, S., & Herrera, F. (2019). A snapshot on nonstandard supervised learning problems: taxonomy, relationships, problem transformations and algorithm adaptations. <i>Progress in Artificial Intelligence</i>, 8(1), 1-14.
+      </blockquote>
+    </div>
+    <img class="preview" src="images/paper3.png">
+  </section>
+
+  <section class="slide cover clear" id="a5s1">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
+    <div>
+      <h1>Nuevos modelos para reducir complejidad</h1>
+      <blockquote>
+        Charte, D., Charte, F., & Herrera, F. (2021). Reducing data complexity using autoencoders with class-informed loss functions. <i>IEEE Transactions on Pattern Analysis and Machine Intelligence</i>.
+      </blockquote>
+    </div>
+    <img class="preview" src="images/paper5.png">
+  </section>
+
+  <!-- dar más bombo al último paper!! -->
+
+  <section class="slide cover clear" id="conclusiones">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
+    <h1>Comentarios finales</h1>
+  </section>
+
 <!--
   <section class=comment>
    <p>One way to get started writing slides with the b6+ framework is
@@ -1054,13 +1273,18 @@ Lines in a PRE can be numbered
 
   <script>
     (function() {
+      let toc_slide = document.querySelector(".maketoc")
       let current_section = ""
+      let current_section_id = ""
       let slides = document.querySelectorAll(".slide")
+
       for (let i = 0; i < slides.length; ++i) {
-        if (slides[i].classList.contains("cover")) {
+        if (slides[i].classList.contains("cover") && !slides[i].classList.contains("titleslide")) {
           current_section = slides[i].querySelector("h1").textContent;
+          current_section_id = slides[i].id;
+          toc_slide.insertAdjacentHTML('beforeend', `<li><a class=internal href="#${current_section_id}">${current_section}</a></li>`)
         } else if (!slides[i].classList.contains("clear")) {
-          slides[i].insertAdjacentHTML('beforeend', `<footer>${current_section}</footer>`)
+          slides[i].insertAdjacentHTML('beforeend', `<footer><a class=internal href="#${current_section_id}">${current_section}</a></footer>`)
         }
       }
     })()
@@ -1071,5 +1295,11 @@ Lines in a PRE can be numbered
   <!-- automatically render math in text elements -->
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
       onload="renderMathInElement(document.body);"></script>
+  
+      <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+  
+  <script>window.addEventListener("load", function() {hljs.highlightAll();})</script>
  </body>
 </html>
