@@ -81,6 +81,8 @@
  * See http://www.w3.org/Consortium/Legal/copyright-software
  * 
  * Modified: Jun 2022 (Added audio and video as clickable elements) by David Charte
+ * Modified: Jun 2022 (Automatically play videos when progressing through slides, only once)
+ * Modified: Jun 2022 (Set 'p' key to play and pause videos in a slide)
  */
 
 (function() {
@@ -455,18 +457,18 @@ function keyDown(event)
   /* Focused elements should handle most keys themselves. */
   if (slidemode) {
     switch (event.key) {
-    case "PageDown":   nextSlide(); break;
+    case "PageDown":   nextSlide(); setTimeout(playVideo, 1000); break;
     case "PageUp":     previousSlide(); break;
     case "Left":       // Some older browsers
     case "ArrowLeft":  if (!on_body) return; else previousSlide(); break;
     case "Up":	       // Some older browsers
     case "ArrowUp":    if (!on_body) return; else previousSlide(); break;
     case "Spacebar":   // Some older browsers
-    case " ":          if (!on_body) return; else nextSlideOrElt(); break;
+    case " ":          if (!on_body) return; else nextSlideOrElt(); setTimeout(playVideo, 1000); break;
     case "Right":      // Some older browsers
-    case "ArrowRight": if (!on_body) return; else nextSlideOrElt(); break;
+    case "ArrowRight": if (!on_body) return; else nextSlideOrElt(); setTimeout(playVideo, 1000); break;
     case "Down":       // Some older browsers
-    case "ArrowDown":  if (!on_body) return; else nextSlideOrElt(); break;
+    case "ArrowDown":  if (!on_body) return; else nextSlideOrElt(); setTimeout(playVideo, 1000); break;
     case "Home":       if (!on_body) return; else firstSlide(); break;
     case "End":        if (!on_body) return; else lastSlide(); break;
     case "a":          if (!on_body) return; else toggleMode(); break;
@@ -475,6 +477,7 @@ function keyDown(event)
     case "Escape":     toggleMode(); break;
     case "2":          if (!on_body) return; else openSecondWindow(); break;
     case '?':          if (!on_body) return; else help(); break;
+    case "p":          if (!on_body) return; else playOrPauseVideo(); break;
     default:           return;
     }
   } else {
@@ -486,6 +489,26 @@ function keyDown(event)
   event.preventDefault();
 }
 
+function playVideo() {
+  let videos = document.querySelectorAll(".slide.active video");
+  for (let i = 0; i < videos.length; ++i) {
+    videos[i].muted = true;
+    if (videos[i].paused && videos[i].played.length < 1) {
+      videos[i].play();
+    }
+  }
+}
+function playOrPauseVideo() {
+  let videos = document.querySelectorAll(".slide.active video");
+  for (let i = 0; i < videos.length; ++i) {
+    videos[i].muted = true;
+    if (videos[i].paused) {
+      videos[i].play();
+    } else {
+      videos[i].pause();
+    }
+  }
+}
 
 /* load -- handle the load event */
 function load(e)

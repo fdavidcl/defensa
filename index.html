@@ -4,8 +4,8 @@
   <title>Mejoras en tratamiento de problemas de clasificación con modelos basados en autoencoders</title>
   <meta name=viewport content="width=device-width">
   <meta name="duration" content="45" />
-  <link rel=stylesheet href="simple.css">
-  <script src="b6plus.js"></script>
+  <link rel=stylesheet href="assets/css/simple.css">
+  <script src="assets/js/b6plus.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Rubik:ital,wght@0,400;0,600;1,400;1,600&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -88,6 +88,9 @@ cut-in
   <section class="slide clear">
     <h1>Índice</h1>
     <ol class="maketoc"></ol>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <div class="box next">Sigue la presentación en <a href="https://deivi.ch/defensa">deivi.ch/defensa</a></div>
   </section>
 
   <section class="cover slide clear " id="intro">
@@ -155,18 +158,18 @@ cut-in
   </section>
 
   <section class="slide" id="a1s2">
-    <h1>Introducción</h1>
+    <h1>Taxonomía</h1>
     <ul>
       <li><b>Fusión de características</b>: combinar variables para mejorar el aprendizaje, eliminar información redundante e irrelevante</li>
-      <li><b>Autoencoders</b>: mecanismos de fusión de características basados en aprendizaje profundo</li>
+      <!-- <li><b>Autoencoders</b>: mecanismos de fusión de características basados en aprendizaje profundo</li> -->
     </ul>
+    <img src="images/taxonomy.png">
   </section>
 
-  <section class="slide" id="a1s3">
+  <!-- <section class="slide" id="a1s3">
     <h1>Taxonomía</h1>
-    <img src="images/taxonomy.png">
-    <!-- <iframe src="assets/taxonomy.pdf#toolbar=0"></iframe> -->
-  </section>
+    <iframe src="assets/taxonomy.pdf#toolbar=0"></iframe> -->
+  <!-- </section> -->
 
   <section class="slide" id="a1s4">
     <h1>Reducción de dimensionalidad</h1>
@@ -242,6 +245,35 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
     <ul><li>Inspirados por Generative Adversarial Networks</li></ul>
   </section>
 
+  <section class="slide" id="a1s7.5">
+    <h1>Entrenamiento y evaluación</h1>
+    <h3>Optimización</h3>
+    <ul>
+      <li>Función objetivo: <strong>MSE</strong>, entropía cruzada binaria...</li>
+      <li>Cálculo del gradiente: <strong>backpropagation</strong></li>
+      <li>Cálculo de actualizaciones: <strong>SGD</strong>, Adam, RMSProp, Adadelta...</li>
+    </ul>
+    <h3>Métricas</h3>
+    <div class="flex">
+      <div class="box secondary">
+        Error cuadrático medio
+        $$\text{MSE}(x,x')=\frac 1 n \sum_{i=1}^n (x_i - x'_i)^2$$
+      </div>
+      <div class="box secondary">
+        Raíz del ECM
+        $$\text{RMSE}(x,x')=\sqrt{\text{MSE}(x,x')}$$
+      </div>
+      <div class="box secondary">
+        Error absoluto medio
+        $$\text{MAE}(x,x')=\frac 1 n \sum_{i=1}^n \left\lvert{}x_i - x'_i\right\rvert$$
+      </div>
+      <div class="box secondary">
+        Error porcentual absoluto medio
+        $$\text{MAPE}(x,x')=\frac 1 n \sum_{i=1}^n \left\lvert{}\frac{x_i - x'_i}{x_i}\right\rvert$$
+      </div>
+    </div>
+  </section>
+
   <section class="slide" id="a1s8">
     <h1>Comparación con otras técnicas</h1>
     <ul class="incremental">
@@ -270,6 +302,23 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
       </blockquote>
     </div>
     <img class="preview" src="images/paper4.png">
+  </section>
+
+  <section class="slide" id="a4s2">
+    <h1>Motivación</h1>
+    <ul>
+      <li class=next>Antiguo uso de los AE: <strong>pre-entrenamiento</strong>, ahora innecesario</li>
+      <li class=next>Las variantes de AEs dan pie a codificaciones con diferentes propiedades</li>
+      <li class=next>¿Cuáles son los usos modernos de un AE?</li>
+    </ul>
+    <div class="flex">
+      <div class="box next">Visualización/embedding</div>
+      <div class="box next">Hashing semántico</div>
+      <div class="box next">Compresión de datos de dominio específico</div>
+      <div class="box next">Transformación de dominio</div>
+      <div class="box next">Filtrado de ruido</div>
+      <div class="box next">Generación de datos</div>
+    </div>
   </section>
 
   <section class="slide cover clear" id="a2s1">
@@ -363,8 +412,7 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
   <section class="slide" id="a2s5">
     <h1>Ejemplos de uso</h1>
     <h3>Entrenamiento y codificación</h3>
-    <pre><code class="language-r">encoded <- iris[, 1:4] %>% as.matrix() %>% 
-  autoencode(2, "robust")</code></pre>
+    <pre><code class="language-r">encoded <- iris[, 1:4] %>% as.matrix() %>% autoencode(2, "robust")</code></pre>
     <h3>Definición de una red, reconstrucción, evaluación</h3>
     <pre><code class="language-r">learner <- autoencoder_sparse(
   input() + dense(3, "tanh") + output(),
@@ -383,12 +431,11 @@ evaluate_mean_squared_error(model, test_x)</code></pre>
   variational_block(10, seed = 42) +
   dense(256, "elu") +
   output("sigmoid")
-learner <- autoencoder_variational(network, 
-  loss = "binary_crossentropy")
+learner <- autoencoder_variational(network, loss = "binary_crossentropy")
 model <- train(learner, x_train, epochs = 10)
 
-samples <- model %>% generate(dimensions = c(8, 5), 
-  side = 6, fixed_values = 0.99)
+samples <- model %>% 
+  generate(dimensions = c(8, 5), side = 6, fixed_values = 0.99)
 plot_matrix(samples)</code></pre>
 <img src="images/rutavariational.png" alt="Muestreo de dígitos de la codificación aprendida desde MNIST con un autoencoder variacional" style="height: 6em">
   </section>
@@ -452,8 +499,8 @@ plot_matrix(samples)</code></pre>
       onload="renderMathInElement(document.body);"></script>
   
       <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+      href="assets/css/nord.min.css">
+  <script defer src="assets/js/highlight.min.js"></script>
   
   <script>window.addEventListener("load", function() {hljs.highlightAll();})</script>
  </body>
