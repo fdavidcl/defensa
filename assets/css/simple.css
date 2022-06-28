@@ -522,6 +522,18 @@ h1 .largest {
   flex-grow: 1;
   flex-basis: 10em;
 }
+
+.slide.anchor-bottom {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 0px;
+}
+.slide.anchor-bottom .space {
+  flex-grow: 1;
+}
+
 /* ugr logo in title slide */
 .vertical-logo {
   margin: -2rem 0 -1rem -1rem;
@@ -699,6 +711,19 @@ li.active {
 }
 .right {
   text-align: right;
+}
+
+/* citations */
+.citation {
+  color: #3b4252;
+  background-color: #eceff4;
+  font-size: 80%;
+  padding: .5em 1em;
+  border-radius: var(--standard-radius);
+}
+.citation sup {
+  font-size: .9rem;
+  color: black;
 }
 
 /* latex booktabs style for tables */

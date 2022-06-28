@@ -109,6 +109,7 @@ cut-in
   </section>
 
   
+  
   <section id="motivación" class="slide section level2">
     <h1>Motivación</h1>
     <ul class="incremental">
@@ -123,15 +124,31 @@ cut-in
     <p><span class="math display">$$\alpha=\sum_{p=0}^ne^{i\pi}$$</span></p>
     <p class="box">Esta es una caja con texto bastante largo para que ocupe varias líneas. Esta es una caja con texto bastante largo para que ocupe varias líneas. Esta es una caja con texto bastante largo para que ocupe varias líneas. Esta es una caja con texto bastante largo para que ocupe varias líneas</p>
   </section>
-  <section class="slide section level2">
+  <section class="slide anchor-bottom">
       <h1>Objetivos</h1>
-      <ul class="incremental">
-          <li>Estudio teórico y producción de recursos sobre <i>autoencoders</i>
-          <li>Desarrollo de implementaciones de <i>autoencoders</i> accesibles
-          <li>Exploración de aplicaciones de los modelos basados en <i>autoencoders</i> y de problemas supervisados donde pueden tener potencial
-          <li>Diseño de soluciones basadas en <i>autoencoders</i> para el tratamiento de problemas supervisados
-      </ul>
+      <div class="space"></div>
+      <div class="flex">
+      <!-- <ul class="incremental"> -->
+          <div class="box next secondary">Estudio teórico y producción de recursos sobre <i>autoencoders</i></div>
+          <div class="box next secondary">Desarrollo de implementaciones de <i>autoencoders</i> accesibles </div>
+          <div class="box next secondary">Exploración de aplicaciones de los modelos basados en <i>autoencoders</i> y de problemas supervisados donde pueden tener potencial</div>
+          <div class="box next secondary">Diseño de soluciones basadas en <i>autoencoders</i> para el tratamiento de problemas supervisados</div>
+      <!-- </ul> -->
+    </div>
+    <div class="space"></div>
+    <div class="space"></div>
   </section>
+
+  <section class="slide" id="conceptos">
+    <h1>Conceptos abordados</h1>
+    <div class="flex">
+      <div class="box next secondary">Aprendizaje de representaciones</div>
+      <div class="box next secondary">Aprendizaje profundo</div>
+      <div class="box next secondary">Problemas no estándares</div>
+      <div class="box next secondary">Complejidad de datos</div>
+    </div>
+  </section>
+
   <section class="slide section level2" id="quees">
       <h1>¿Qué es un <i>autoencoder</i>?</h1>
       <video src="media/videos/scene/720p30/CreateNet.mp4" onclick="this.paused?this.play():this.pause()" muted preload="auto"></video>
@@ -379,9 +396,13 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
 
   <section class="slide" id="a4s6">
     <h1>Detección de anomalías</h1>
-    <strong>Denoising AE</strong>. Alternativas: AE básico, contractive AE
+    <strong>Denoising AE</strong>. Alternativas: AE básico, contractive AE, variational AE
+    <ul>
+      <li>No siempre detecta anomalías individuales, mejor para series temporales</li>
+    </ul>
     <img src="images/a4nom.png">
   </section>
+
   <section class="slide" id="a4s7">
     <h1>Generación de instancias</h1>
     <div class="flex">
@@ -390,6 +411,19 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
       </div>
       <img src="images/variational-matrix.png" style="width: 22em">
     </div>
+  </section>
+
+  <section class="slide anchor-bottom">
+    <h1>Perspectivas de explicabilidad</h1>
+    <ul class="incremental">
+      <li>Desentrelazado (<i>disentanglement</i>) de variables<sup>1</sup></li>
+      <li>Explicaciones sobre variables de entrada</li>
+      <li>ALIME: interpretabilidad local con AEs</li>
+    </ul>
+    <div class="space"></div>
+    <img src="images/tcvae.png" alt="Imágenes generadas por Total Correlation VAE">
+    <div class="space"></div>
+    <p class="citation"><sup>1</sup>Chen, R. T., Li, X., Grosse, R. B., & Duvenaud, D. K. (2018). Isolating sources of disentanglement in variational autoencoders. Advances in neural information processing systems, 31.</p>
   </section>
 
   <section class="slide cover clear" id="a2s1">
@@ -483,29 +517,29 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
   <section class="slide" id="a2s5">
     <h1>Ejemplos de uso</h1>
     <h3>Entrenamiento y codificación</h3>
-    <pre><code class="language-r">encoded <- iris[, 1:4] %>% as.matrix() %>% autoencode(2, "robust")</code></pre>
+    <pre><code class="language-r">encoded &lt;- iris[, 1:4] %>% as.matrix() %>% autoencode(2, "robust")</code></pre>
     <h3>Definición de una red, reconstrucción, evaluación</h3>
-    <pre><code class="language-r">learner <- autoencoder_sparse(
+    <pre><code class="language-r">learner &lt;- autoencoder_sparse(
   input() + dense(3, "tanh") + output(),
   "mean_squared_error"
 )
-model <- train(learner, train_x, epochs = 200)
-reconstructions <- reconstruct(model, test_x)
+model &lt;- train(learner, train_x, epochs = 200)
+reconstructions &lt;- reconstruct(model, test_x)
 evaluate_mean_squared_error(model, test_x)</code></pre>
   </section>
 
   <section class="slide" id="a2s6">
     <h1>Ejemplo AE variacional</h1>
-    <pre><code class="language-r">network <-
+    <pre><code class="language-r">network &lt;-
   input() +
   dense(256, "elu") +
   variational_block(10, seed = 42) +
   dense(256, "elu") +
   output("sigmoid")
-learner <- autoencoder_variational(network, loss = "binary_crossentropy")
-model <- train(learner, x_train, epochs = 10)
+learner &lt;- autoencoder_variational(network, loss = "binary_crossentropy")
+model &lt;- train(learner, x_train, epochs = 10)
 
-samples <- model %>% 
+samples &lt;- model %>% 
   generate(dimensions = c(8, 5), side = 6, fixed_values = 0.99)
 plot_matrix(samples)</code></pre>
 <img src="images/rutavariational.png" alt="Muestreo de dígitos de la codificación aprendida desde MNIST con un autoencoder variacional" style="height: 6em">
@@ -536,6 +570,11 @@ plot_matrix(samples)</code></pre>
     <img class="preview" src="images/paper5.png">
   </section>
 
+  
+
+  <section class="slide">
+
+  </section>
   <!-- dar más bombo al último paper!! -->
 
   <section class="slide cover clear" id="conclusiones">
