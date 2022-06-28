@@ -692,3 +692,40 @@ li.visited, li.visited strong {
 li.active {
   color: #601515;
 }
+
+/* align stuff */
+.center {
+  text-align: center;
+}
+.right {
+  text-align: right;
+}
+
+/* latex booktabs style for tables */
+table {
+  border: solid black;
+  border-width: 2px 0 2px 0;
+  border-collapse: collapse;
+}
+
+thead tr th {
+  border-bottom: 1px solid black;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  text-align: left;
+  padding: .1em .4em;
+}
+th + th, td + td {
+  padding-left: 1em;
+}
+table.first-right td:nth-child(1), table.first-right th:nth-child(1) {
+  text-align: right;
+}
+table.second-right td:nth-child(2), table.second-right th:nth-child(2) {
+  text-align: right;
+}
+table.third-right td:nth-child(3), table.third-right th:nth-child(3) {
+  text-align: right;
+}

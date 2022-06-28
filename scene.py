@@ -39,9 +39,9 @@ class CreateNet(Scene):
         self.camera.background_color = WHITE
 
         # create "variables" represented as columns in a table
-        table = [Rectangle(width=1.0, height=2.0, grid_xstep=1.0, grid_ystep=0.5).set_color(BLACK) for _ in range(5)]
+        table = [Rectangle(width=0.9, height=2.0, grid_xstep=1.0, grid_ystep=0.5).set_color(BLACK) for _ in range(5)]
         for i, n in enumerate(table):
-            n.shift(LEFT * (i - 2))
+            n.shift(RIGHT * (i - 2))
         
         self.play(Create(table[2]))
         self.play(Create(table[1]), Create(table[3]))
@@ -58,7 +58,7 @@ class CreateNet(Scene):
         # "copy" those nodes onto the final output layer
         self.wait(0.5)
         layer3 = table # use the nodes that were just transformed as last layer
-        self.play(*[n.animate.shift(4 * RIGHT) for n in layer3])
+        self.play(VGroup(*layer3).animate.shift(4 * RIGHT))
         
         # create a middle "encoding" layer
         self.wait(0.5)
@@ -72,10 +72,10 @@ class CreateNet(Scene):
         self.play_queue()
 
         # fade out connections
-        self.play(*[l.animate.fade(1) for l in l12c], *[l.animate.fade(1) for l in l23c])
+        self.play(VGroup(*l12c, *l23c).animate.fade(1))#*[l.animate.fade(1) for l in l12c], *[l.animate.fade(1) for l in l23c])
 
         # separate input and output
-        self.play(*[n.animate.shift(2*LEFT) for n in layer1], *[n.animate.shift(2*RIGHT) for n in layer3])
+        self.play(VGroup(*layer1).animate.shift(2*LEFT), VGroup(*layer3).animate.shift(2*RIGHT))
         
         # create more hidden layers
         layer4 = self.layer_objects(3, 1)

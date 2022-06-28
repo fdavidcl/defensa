@@ -314,10 +314,81 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
     <div class="flex">
       <div class="box next">Visualización/embedding</div>
       <div class="box next">Hashing semántico</div>
-      <div class="box next">Compresión de datos de dominio específico</div>
-      <div class="box next">Transformación de dominio</div>
       <div class="box next">Filtrado de ruido</div>
-      <div class="box next">Generación de datos</div>
+      <div class="box next">Generación de instancias</div>
+      <div class="box next">Detección de anomalías</div>
+      <div class="box next secondary">Compresión de datos</div>
+      <div class="box next secondary">Transformación de dominio</div>
+      <div class="box next secondary">Superresolución</div>
+      <div class="box next secondary">Sistemas de recomendación</div>
+      <div class="box next secondary">Reconocimiento de poses/figuras</div>
+    </div>
+  </section>
+
+  <section class="slide" id="a4s3">
+    <h1>Visualización de datos</h1>
+    <strong>Contractive AE</strong>.
+    Alternativas: denoising AE, AE con regularización embedding, manifold learning, t-SNE
+    <img src="images/a4vis.png">
+    <div class="flex">
+      <p class="center">CPU Activity (21 variables)</p>
+      <p class="center">Satellite Image (36 variables)</p>
+    </div>
+  </section>
+
+  <section class="slide" id="a4s4">
+    <h1>Reducción de ruido</h1>
+    <div class="flex">
+      <div>
+        <strong>Denoising AE</strong>. Alternativas: robust AE
+        <p></p>
+        <table class="second-right third-right">
+          <thead><tr>
+            <th>Imágenes</th><th>MSE</th><th>Reducción</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>Originales</td><td>0</td><td>100%</td>
+            </tr>
+            <tr>
+              <td>Ruidosas</td><td>1656.08</td><td>0%</td>
+            </tr>
+            <tr>
+              <td>Basic AE</td><td>576.68</td><td>62.14%</td>
+            </tr>
+            <tr>
+              <td>Denoising</td><td>159.74</td><td>88.94%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <img src="images/denoising-predictions.png" style="width:21em">
+    </div>
+  </section>
+
+  <section class="slide" id="a4s5">
+    <h1>Hashing semántico</h1>
+    <div class="flex">
+      <div>
+        Tarea similar a <i>clustering</i> donde cada clúster tiene un <strong>código asociado</strong>. Los códigos similares corresponden a clusters más parecidos entre sí.
+        <p><strong>AE con regularización de ruido gaussiano</strong>.</p>
+      </div>
+      <img src="images/a4ham.png">
+    </div>
+  </section>
+
+  <section class="slide" id="a4s6">
+    <h1>Detección de anomalías</h1>
+    <strong>Denoising AE</strong>. Alternativas: AE básico, contractive AE
+    <img src="images/a4nom.png">
+  </section>
+  <section class="slide" id="a4s7">
+    <h1>Generación de instancias</h1>
+    <div class="flex">
+      <div>
+        <strong>Autoencoder variacional</strong>. Alternativas: AE adversarial
+      </div>
+      <img src="images/variational-matrix.png" style="width: 22em">
     </div>
   </section>
 
