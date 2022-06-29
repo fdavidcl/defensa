@@ -572,6 +572,21 @@ h1 .largest {
 .box:not(.secondary) a {
   color: white;
 }
+.box.labels-grouped {
+  border-color: #88c0d0;
+  background-color: #b48ead;
+  color: black;
+}
+.box.labels-onvsall {
+  border-color: #88c0d0;
+  background-color: #a3be8c;
+  color: black;
+}
+.box.multilabel {
+  border-color: #88c0d0;
+  background-color: #d08770;
+  color: black;
+}
 
 /* hide katex generated plain markup */
 .katex-html {
@@ -746,6 +761,12 @@ table.third-right td:nth-child(3), table.third-right th:nth-child(3) {
   flex-grow: 1;
   flex-basis: 10em;
 }
+.flex.narrow {
+  gap: .5em;
+}
+.flex.narrow > * {
+  flex-basis: 8em;
+}
 
 .anchor-bottom {
   display: flex;
@@ -767,4 +788,8 @@ table.third-right td:nth-child(3), table.third-right th:nth-child(3) {
 
 .phantom {
   visibility: hidden;
+}
+
+.citation + .citation {
+  margin-top: .3rem;
 }

@@ -644,21 +644,136 @@ plot_matrix(samples)</code></pre>
     </ul>
   </section>
 
-  <section class="slide" id="a5s5">
+  <section class="slide" id="a5s5" style="color: red !important">
     <h1>Skaler</h1>
     <h3>Definición</h3>
-    $$\Omega(\theta;S)=- \sum_{j=1}^{d}\left[P_+(j)~ \log\frac{P_+(j)}{P_-(j)} + H(j)\right]$$
+    <p>$$\Omega(\theta;S)=- \sum_{j=1}^{d}\left[P_+(j)~ \log\frac{P_+(j)}{P_-(j)} + H(j)\right]$$</p>
 
-    donde \(P_+(j)\) indica la probabilidad de que la \(j\)-ésima variable <strong>tenga el valor más alto</strong> en las instancias positivas (y \(P_+(j)\) lo análogo para negativas):
+    <p>donde \(P_+(j)\) indica la probabilidad de que la \(j\)-ésima variable <strong>tenga el valor más alto</strong> en las instancias positivas (y \(P_+(j)\) lo análogo para negativas):</p>
 
-    $$ P_+(j)=\operatorname{softmax}\left(\frac{1}{N^{+}}\sum_{(x,+1)\in S}f(x)\right)(j)~,\quad  P_-(j)=\operatorname{softmax}\left(\frac{1}{N^{-}}\sum_{(x,-1)\in S}f(x)\right)(j)$$
+    <p>$$ P_+(j)=\operatorname{softmax}\left(\frac{1}{N^{+}}\sum_{(x,+1)\in S}f(x)\right)(j)~,\quad  P_-(j)=\operatorname{softmax}\left(\frac{1}{N^{-}}\sum_{(x,-1)\in S}f(x)\right)(j)$$</p>
 
-    $$H(j)=-P(j=0)~\log(P(j=0)) + P(j=1)~\log(P(j=1)) $$
+    <p>$$H(j)=-\left(P(j=0)~\log(P(j=0)) + P(j=1)~\log(P(j=1))\right) $$</p>
   </section>
 
-  <section class="slide" id="a5s6">
+  <section class="slide anchor-bottom" id="a5s6">
     <h1>Slicer</h1>
+    <h3>Definición</h3>
+    <ul>
+      <li>Parámetros extra a optimizar: \(w\) y \(b\)</li>
+      <li>Regularización inspirada en <strong>least-squares SVM</strong></li>
+    </ul>
     
+    $$\Omega(\theta;S)=\frac 1 2 \left\Vert w\right\Vert^2+\frac \beta 2\sum_{(x,y)\in S}\left(1 - y\left(w^Tf(x)+b\right)\right)^2$$
+    <div class="space"></div>
+    <img src="images/slicer.png" alt="Modelo Slicer" style="height: 10em">
+  </section>
+
+  <section class="slide" id="a5s7">
+    <h1>Marco experimental: datasets</h1>
+    <div class="flex narrow">
+      <div class="box secondary">Appendicitis</div>
+      <div class="box secondary">Arcene</div>
+      <div class="box secondary">Australian</div>
+      <div class="box secondary">Bioresponse</div>
+      <div class="box secondary">Christine</div>
+      <div class="box secondary">Dexter</div>
+      <div class="box secondary">Gina</div>
+      <div class="box secondary">Gisette</div>
+      <div class="box labels-grouped">Human Act Rec</div>
+      <div class="box secondary">Hill Valley</div>
+      <div class="box labels-onvsall">Indian (corn)</div>
+      <div class="box labels-onvsall">Indian (soybeans)</div>
+      <div class="box secondary">Ionosphere</div>
+      <div class="box labels-grouped">Isolet (vowels)</div>
+      <div class="box secondary">Jasmine</div>
+      <div class="box secondary">Madelon</div>
+      <div class="box labels-grouped">MFeatFactors (odd)</div>
+      <div class="box labels-grouped">MFeatPixel (odd)</div>
+      <div class="box labels-grouped">Satellite (grey)</div>
+      <div class="box multilabel">Scene (beach)</div>
+      <div class="box multilabel">Scene (sunset)</div>
+      <div class="box multilabel">Scene (fall)</div>
+      <div class="box multilabel">Scene (field)</div>
+      <div class="box multilabel">Scene (mountain)</div>
+      <div class="box multilabel">Scene (urban)</div>
+      <div class="box secondary">Sonar</div>
+      <div class="phantom box"></div>
+    </div>
+  </section>
+  <section class="slide" id="a5s8">
+    <h1>Marco experimental</h1>
+    <div class="flex">
+      <div><h3>Métodos</h3><ul>      
+        <li>PCA</li>
+        <li>LLE</li>
+        <li>Isomap</li>
+        <li>AE básico</li>
+        <li>Scorer</li>
+        <li>Skaler</li>
+        <li>Slicer</li>
+      </ul></div>
+      <div><h3>Métricas</h3><ul>
+        <li>F1 (Fisher)</li>
+        <li>F3 (efficiency)</li>
+        <li>ONB (total)</li>
+        <li>ONB (average)</li>
+        <li>L2 (clas. lineal)</li>
+        <li>L3 (linealidad)</li>
+        <li>N3 (clas. 1NN)</li>
+        <li>Para SVM, kNN, MLP:
+          <ul>
+            <li>Fscore</li>
+            <li>AUC</li>
+            <li>Kappa</li>
+          </ul>
+        </li>
+      </ul></div>
+      <div><h3>Parámetros</h3><ul>
+        <li>Dimensión: \(\max\{\min\{\sqrt d, \frac{n}{10}\},2\}\)</li>
+        <li>Épocas: 200</li>
+        <li>Capas ocultas: 1 o 3</li>
+        <li>Activación: ReLU, Sigmoide (Skaler)</li>
+        <li>Peso Scorer: 0.01</li>
+        <li>Peso Skaler: 0.1</li>
+        <li>Peso Slicer: 1</li>
+        <li>Error reconstrucción: entropía cruzada</li>
+      </ul></div>
+    </div>
+    <!-- <table>
+      <thead>
+        <th>Método</th>
+        <th>Descripción</th>
+      </thead>
+      <tr>
+        <td>PCA</td>
+        <td>Maximización varianza (lineal)</td>
+      </tr>
+      <tr>
+        <td>LLE</td>
+        <td>Manifold learning (vecindarios)</td>
+      </tr>
+      <tr>
+        <td>Isomap</td>
+        <td>Manifold learning (basado en MDS)</td>
+      </tr>
+      <tr>
+        <td>AE básico</td>
+        <td>Red neuronal para codificación</td>
+      </tr>
+      <tr>
+        <td>Scorer</td>
+        <td>AE propuesto con ratio Fisher</td>
+      </tr>
+      <tr>
+        <td>Skaler</td>
+        <td>AE propuesto con Kullback-Leibler</td>
+      </tr>
+      <tr>
+        <td>Slicer</td>
+        <td>AE propuesto con objetivo LSSVM</td>
+      </tr>
+    </table> -->
   </section>
   <!-- dar más bombo al último paper!! -->
 
@@ -670,6 +785,17 @@ plot_matrix(samples)</code></pre>
 
   <div class="slide cover clear" id="apendice">
     <h1>Apéndice</h1>
+  </div>
+
+  <div class="slide" id="ap0">
+    <h1>Colaboraciones</h1>
+    <div class="citation">Luengo, J., Moreno, R., Sevillano, I., Charte, D., Peláez-Vegas, A., Fernández-Moreno, M., ... & Herrera, F. (2022). A tutorial on the segmentation of metallographic images: Taxonomy, new MetalDAM dataset, deep learning-based ensemble model, experimental analysis and challenges. Information Fusion, 78, 232-253.</div>
+    <div class="citation">Pascual-Triana, J. D., Charte, D., Andrés Arroyo, M., Fernández, A., & Herrera, F. (2021). Revisiting data complexity metrics based on morphology for overlap and imbalance: snapshot, new overlap number of balls metrics and singular problems prospect. Knowledge and Information Systems, 63(7), 1961-1989.</div>
+    <div class="citation">Tabik, S., Gómez-Ríos, A., Martín-Rodríguez, J. L., Sevillano-García, I., Rey-Area, M., Charte, D., ... & Herrera, F. (2020). COVIDGR dataset and COVID-SDNet methodology for predicting COVID-19 based on chest X-ray images. IEEE journal of biomedical and health informatics, 24(12), 3595-3605.</div>
+    <div class="citation">Górriz, J. M., Ramírez, J., Ortíz, A., Martínez-Murcia, F. J., Segovia, F., Suckling, J., ... & Ferrández, J. M. (2020). Artificial intelligence within the interplay between natural and artificial computation: Advances in data science, trends and applications. Neurocomputing, 410, 237-270.</div>
+    
+    <div class="citation">Charte, F., Rivera, A. J., Charte, D., del Jesus, M. J., & Herrera, F. (2018). Tips, guidelines and tools for managing multi-label datasets: The mldr. datasets R package and the Cometa data repository. Neurocomputing, 289, 68-85.</div>
+
   </div>
 
   <div class="slide" id="ap1">
