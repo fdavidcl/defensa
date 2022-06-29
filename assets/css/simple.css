@@ -48,7 +48,7 @@ body {background: #333; counter-reset: slide; margin: 2em;
   color: white}
 address {/*font-family: serif*/}
 h1 {font-size: 2em; line-height: 1.1; margin: 0 0 0.3em 0;}
-h1, h2, h3, h4, h5, h6 {font-family: 'Rubik', Arial, Helvetica, sans-serif;}
+h1, h2, h3, h4, h5, h6 {font-family: 'Rubik', Arial, Helvetica, sans-serif; margin-bottom: .6rem;}
 .full, .slide {width: 40rem; /*= w */ height: 30rem; /*= N */}
 .slide {
   color: black; 
@@ -455,7 +455,7 @@ body.framed .progress {display: none}
 }
 
 /* custom styles */
-.slide {
+.full .slide {
   -webkit-user-select: none;  
   -moz-user-select: none;    
   -ms-user-select: none;      
@@ -470,6 +470,7 @@ body.framed .progress {display: none}
 .titleslide {
   color: white;
   line-height: 1.5;
+  overflow: hidden;
 }
 .titleslide p {
   margin: .5em 0;
@@ -510,29 +511,6 @@ h1 .largest {
   text-decoration: none;
 }
 
-/* enable columns for some slides */
-.flex {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1em;
-  justify-content: space-evenly;
-}
-.flex > * {
-  flex-grow: 1;
-  flex-basis: 10em;
-}
-
-.slide.anchor-bottom {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  gap: 0px;
-}
-.slide.anchor-bottom .space {
-  flex-grow: 1;
-}
 
 /* ugr logo in title slide */
 .vertical-logo {
@@ -753,4 +731,40 @@ table.second-right td:nth-child(2), table.second-right th:nth-child(2) {
 }
 table.third-right td:nth-child(3), table.third-right th:nth-child(3) {
   text-align: right;
+}
+
+
+/* enable columns for some slides */
+.flex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: space-evenly;
+}
+.flex > * {
+  flex-grow: 1;
+  flex-basis: 10em;
+}
+
+.anchor-bottom {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 0px;
+}
+.anchor-right {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 0px;
+}
+.space {
+  flex-grow: 1;
+}
+
+.phantom {
+  visibility: hidden;
 }

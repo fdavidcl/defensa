@@ -85,7 +85,7 @@ cut-in
     </div>
   </section>
 
-  <section class="slide clear">
+  <section class="slide clear" id="toc">
     <h1>Índice</h1>
     <ol class="maketoc"></ol>
     <p>&nbsp;</p>
@@ -99,7 +99,7 @@ cut-in
     <h1>Introducción</h1>
   </section>
 
-  <section class="slide">
+  <section class="slide" id="contexto">
     <h1>Contexto</h1>
     <ul class="incremental">
         <li>Incremento en la recopilación de datos, su variedad y diversidad de fuentes</li>
@@ -110,7 +110,7 @@ cut-in
 
   
   
-  <section id="motivación" class="slide section level2">
+  <section id="motivación" class="slide">
     <h1>Motivación</h1>
     <ul class="incremental">
         <li>¿Cómo se realiza aprendizaje de representaciones mediante modelos
@@ -124,7 +124,7 @@ cut-in
     <p><span class="math display">$$\alpha=\sum_{p=0}^ne^{i\pi}$$</span></p>
     <p class="box">Esta es una caja con texto bastante largo para que ocupe varias líneas. Esta es una caja con texto bastante largo para que ocupe varias líneas. Esta es una caja con texto bastante largo para que ocupe varias líneas. Esta es una caja con texto bastante largo para que ocupe varias líneas</p>
   </section>
-  <section class="slide anchor-bottom">
+  <section class="slide anchor-bottom" id="objetivos">
       <h1>Objetivos</h1>
       <div class="space"></div>
       <div class="flex">
@@ -570,10 +570,95 @@ plot_matrix(samples)</code></pre>
     <img class="preview" src="images/paper5.png">
   </section>
 
+  <section class="slide" id="a5s2">
+    <h1>Complejidad de datos: fuentes</h1>
+    <h3>Solapamiento de clases</h3>
+    <div class="flex">
+      <div class="box secondary anchor-right"><strong>F1</strong><div class="space"></div>Max. Fisher's discriminant ratio</div>
+      <div class="box secondary anchor-right"><strong>F3</strong><div class="space"></div> Maximum feature efficiency</div>
+    </div>
+    <h3>Separabilidad y no linealidad</h3>
+    <div class="flex">
+      <div class="box secondary anchor-right"><strong>L2</strong><div class="space"></div>Linear classifier error</div>
+      <div class="box secondary anchor-right"><strong>L3</strong>
+      <div class="space"></div>Linear classifier nonlinearity</div>
+    </div>
+    <h3>Vecindarios y morfología</h3>
+    <div class="flex">
+      <div class="box secondary anchor-right"><strong>N3</strong><div class="space"></div>1NN classifier error</div>
+      <div class="box secondary anchor-right"><strong>ONB</strong>
+      <div class="space"></div>Number of balls to cover classes</div>
+    </div>
+    <h3>Dimensionalidad</h3>
+    <div class="flex">
+      <div class="box secondary anchor-right"><strong>T2</strong>
+      <div class="space"></div>Instances-to-features ratio</div>
+      <div class="phantom box"></div>
+    </div>
+  </section>
+
+  <section class="slide" id="a5s3">
+    <h1>Complejidad de datos: reducción</h1>
+    <div class="flex">
+      <div class="box secondary">Selección de características</div>
+      <div class="box secondary">Extracción de características</div>
+      <div class="box secondary">Aprendizaje de métricas de distancia</div>
+      <div class="box next">Autoencoders</div>
+    </div>
+    <ul class=next>
+      <li>Principal enfoque actual: reducir <strong>dimensionalidad</strong></li>
+      <li>Nuestro objetivo: abordar <strong>solapamiento/separabilidad</strong></li>
+      <li>Método: enriquecer la función objetivo con <strong>información de clase</strong></li>
+    </ul>
+    <div class="next">
+      
+    <h3>Diseño</h3>
+    <div class="flex" style="align-items: center;">
+      <div>
+        $$J(\theta;S)=\sum_{(x,y)\in S} \mathcal(s,(g\circ f)(x)) + \lambda\Omega(\theta;S)$$
+      </div>
+      <div class="flex next">
+        <div class="box secondary anchor-right">Scorer <div class="space"></div> métrica F1</div>
+        <div class="box secondary anchor-right">Skaler<div class="space"></div>divergencia KL</div>
+        <div class="box secondary anchor-right">Slicer<div class="space"></div>objetivo LSSVM</div>
+      </div>
+    </div>
+    </div>
+  </section>
   
 
-  <section class="slide">
+  <section class="slide" id="a5s4">
+    <h1>Scorer</h1>
+    <h3>Definición</h3>
+    <ul>
+      <li>Promedios de las codificaciones para cada clase:
+        $$\mu_j^+ = \frac 1 {N^+} \sum_{(x,+1)\in S} f(x)_j,\quad \mu_j^- = \frac 1 {N^-} \sum_{(x,-1)\in S} f(x)_j$$
+    </li>
+      <li>Desviaciones de las codificaciones para cada clase:
+        $$\sigma_j^+ = \left[\frac 1 {N^+} \sum_{(x,+1)\in S} f(x)_j^2\right] - (\mu_j^+)^2,\quad\sigma_j^+ = \left[\frac 1 {N^-} \sum_{(x,-1)\in S} f(x)_j^2\right] - (\mu_j^-)^2 $$
+      </li>
+      <li>
+        Cálculo del ratio de Fisher medio:
+        $$F=\frac{1}{n_f}\sum_{j=1}^{n_f} \frac{(\mu_j^+-\mu_j^-)^2}{\sigma_j^++\sigma_j^-},\quad\Omega(\theta;S)=\frac{1}{1 + F}\in(0,1)$$
+      </li>
+    </ul>
+  </section>
 
+  <section class="slide" id="a5s5">
+    <h1>Skaler</h1>
+    <h3>Definición</h3>
+    $$\Omega(\theta;S)=- \sum_{j=1}^{d}\left[P_+(j)~ \log\frac{P_+(j)}{P_-(j)} + H(j)\right]$$
+
+    donde \(P_+(j)\) indica la probabilidad de que la \(j\)-ésima variable <strong>tenga el valor más alto</strong> en las instancias positivas (y \(P_+(j)\) lo análogo para negativas):
+
+    $$ P_+(j)=\operatorname{softmax}\left(\frac{1}{N^{+}}\sum_{(x,+1)\in S}f(x)\right)(j)~,\quad  P_-(j)=\operatorname{softmax}\left(\frac{1}{N^{-}}\sum_{(x,-1)\in S}f(x)\right)(j)$$
+
+    $$H(j)=-P(j=0)~\log(P(j=0)) + P(j=1)~\log(P(j=1)) $$
+  </section>
+
+  <section class="slide" id="a5s6">
+    <h1>Slicer</h1>
+    
   </section>
   <!-- dar más bombo al último paper!! -->
 
@@ -582,6 +667,20 @@ plot_matrix(samples)</code></pre>
     alt="Abstract nodes and connections" />
     <h1>Comentarios finales</h1>
   </section>
+
+  <div class="slide cover clear" id="apendice">
+    <h1>Apéndice</h1>
+  </div>
+
+  <div class="slide" id="ap1">
+    <h1>Sobre los nombres</h1>
+    <ul>
+      <li>Ruta: R unsupervised deep architectures</li>
+      <li>Scorer: Supervised COmplexity REduction</li>
+      <li>Skaler: Supervised KullbAck-LeiblEr Reduction</li>
+      <li>Slicer: Supervised LInear Classifier Error Reduction</li>
+    </ul>
+  </div>
 
   <script>
     (function() {

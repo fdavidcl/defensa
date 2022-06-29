@@ -1,6 +1,18 @@
 from manim import *
 
-class CreateNet(Scene):
+class AutoencoderDrawing(Scene):
+    def play_queue(self):
+        self.play(*self.animation_queue)
+        self.clear_queue()
+
+    def clear_queue(self):
+        self.animation_queue.clear()
+        
+
+    def transform_many(self, l_from, l_to):
+        for a, b in zip(l_from, l_to):
+            self.animation_queue.append(Transform(a, b))
+    
     def layer_objects(self, n_units=1, left=0, color=RED):
         nodes1 = [Circle(.5).set_color(color) for _ in range(n_units)]
         nodes = VGroup(*nodes1)
@@ -8,35 +20,43 @@ class CreateNet(Scene):
         for i, n in enumerate(nodes1):
             n.shift(DOWN * (i - middle) * 1.2)
             n.shift(LEFT * 2 * left)
-        self.animation_queue.append(Create(nodes, lag_ratio=.5))
 
+        self.animation_queue.append(Create(nodes, lag_ratio=self.node_lag))
         return nodes1
-
-    def play_queue(self):
-        self.play(*self.animation_queue)
-        self.clear_queue()
-
-    def clear_queue(self):
-        self.animation_queue.clear()
-
-    # def create_layer(self, n_units=1, left=0, color=RED):
-    #     nodes = self.layer_objects(n_units, left, color)
-    #     self.play(*[Create(n) for n in nodes])
-    #     return nodes
-
+        
     def connect_layers(self, l1, l2):
         lines = VGroup(*[Line(start=n.get_right(), end=m.get_left()).set_color(BLACK) for m in l2 for n in l1])
-        self.animation_queue.append(Create(lines, lag_ratio=.2))
+        self.animation_queue.append(Create(lines, lag_ratio=self.connection_lag))
         return lines
 
-    def transform_many(self, l_from, l_to):
-        for a, b in zip(l_from, l_to):
-            self.animation_queue.append(Transform(a, b))
+    def build_net(self, *layers, colors=None):
+        autoencoder_mobjects = {
+            "layers": [],
+            "connections": []
+        }
+        for i, units in enumerate(layers):
+            autoencoder_mobjects["layers"].append(self.layer_objects(n_units=units, left=(len(layers)-1)/2.-i, color=RED if colors is None else colors[i]))
+            if i > 0:
+                autoencoder_mobjects["connections"].append(self.connect_layers(autoencoder_mobjects["layers"][i-1],autoencoder_mobjects["layers"][i]))
+        return autoencoder_mobjects
 
     def construct(self):
         self.animation_queue = []
-        # set background to white (remember to set stuff to black since there are some default whites)
+        self.node_lag = 0.2
+        self.connection_lag = 0.2
         self.camera.background_color = WHITE
+
+class Scorer(AutoencoderDrawing):
+    def construct(self):
+        super().construct()
+        self.build_net(5, 3, 2, 3, 5, colors=[GREY, GREY, RED, GREY, GREY])
+        self.play_queue()
+        self.pause(1)
+
+class CreateNet(AutoencoderDrawing):
+    def construct(self):
+        super().construct()
+        self.node_lag = 0.5
 
         # create "variables" represented as columns in a table
         table = [Rectangle(width=0.9, height=2.0, grid_xstep=1.0, grid_ystep=0.5).set_color(BLACK) for _ in range(5)]
