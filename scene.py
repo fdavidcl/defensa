@@ -75,11 +75,6 @@ class CreateNet(AutoencoderDrawing):
         self.play_queue()
         self.add(*layer1)
 
-        # "copy" those nodes onto the final output layer
-        self.wait(0.5)
-        layer3 = table # use the nodes that were just transformed as last layer
-        self.play(VGroup(*layer3).animate.shift(4 * RIGHT))
-        
         # create a middle "encoding" layer
         self.wait(0.5)
         layer2 = self.layer_objects(2, 0, PURPLE)
@@ -88,6 +83,13 @@ class CreateNet(AutoencoderDrawing):
         # connect layers to create a neural network
         l12c = self.connect_layers(layer1, layer2)
         self.play_queue()
+
+        # "copy" the input nodes onto the final output layer
+        self.wait(1)
+        layer3 = table # use the nodes that were just transformed as last layer
+        self.play(VGroup(*layer3).animate.shift(4 * RIGHT))        
+
+        # finally connect encoding and output
         l23c = self.connect_layers(layer2, layer3)
         self.play_queue()
 
@@ -107,6 +109,25 @@ class CreateNet(AutoencoderDrawing):
         self.connect_layers(layer2, layer5)
         self.connect_layers(layer5, layer3)
         self.play_queue()
+        self.wait(2)
+
+        rect = Rectangle(BLUE, 6, 6).shift(2*LEFT)
+        self.play(Create(rect))
+
+        text_f = Text("f", color=BLUE).shift(2*LEFT+2.5*UP)
+        self.play(text_f.animate.fade(0))
+        self.wait(2)
+
+        self.play(VGroup(rect, text_f).animate.fade(1))
+
+        rect = Rectangle(ORANGE, 6, 6).shift(2*RIGHT)
+        self.play(Create(rect))
+
+        text_f = Text("g", color=ORANGE).shift(2*RIGHT+2.5*UP)
+        self.play(text_f.animate.fade(0))
+        self.wait(2)
+
+        self.play(VGroup(rect, text_f).animate.fade(1))
 
 
 
