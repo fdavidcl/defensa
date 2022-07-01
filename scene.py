@@ -77,7 +77,7 @@ class CreateNet(AutoencoderDrawing):
 
         # create a middle "encoding" layer
         self.wait(0.5)
-        layer2 = self.layer_objects(2, 0, PURPLE)
+        layer2 = self.layer_objects(2, 0, RED)
         self.play_queue()
 
         # connect layers to create a neural network
@@ -94,14 +94,15 @@ class CreateNet(AutoencoderDrawing):
         self.play_queue()
 
         # fade out connections
+        self.wait(1)
         self.play(VGroup(*l12c, *l23c).animate.fade(1))#*[l.animate.fade(1) for l in l12c], *[l.animate.fade(1) for l in l23c])
 
         # separate input and output
         self.play(VGroup(*layer1).animate.shift(2*LEFT), VGroup(*layer3).animate.shift(2*RIGHT))
         
         # create more hidden layers
-        layer4 = self.layer_objects(3, 1)
-        layer5 = self.layer_objects(3, -1)
+        layer4 = self.layer_objects(3, 1, GREY)
+        layer5 = self.layer_objects(3, -1, GREY)
         self.play_queue()
 
         self.connect_layers(layer1, layer4)
@@ -112,19 +113,17 @@ class CreateNet(AutoencoderDrawing):
         self.wait(2)
 
         rect = Rectangle(BLUE, 6, 6).shift(2*LEFT)
-        self.play(Create(rect))
-
-        text_f = Text("f", color=BLUE).shift(2*LEFT+2.5*UP)
-        self.play(text_f.animate.fade(0))
+        text_f = MathTex("f", color=BLUE).shift(2*LEFT+2.5*UP).set_opacity(0)
+        text_f.font_size = 80
+        self.play(Create(rect), text_f.animate.set_opacity(1))
         self.wait(2)
 
         self.play(VGroup(rect, text_f).animate.fade(1))
 
         rect = Rectangle(ORANGE, 6, 6).shift(2*RIGHT)
-        self.play(Create(rect))
-
-        text_f = Text("g", color=ORANGE).shift(2*RIGHT+2.5*UP)
-        self.play(text_f.animate.fade(0))
+        text_f = MathTex("g", color=ORANGE).shift(2*RIGHT+2.5*UP).set_opacity(0)
+        text_f.font_size = 80
+        self.play(Create(rect), text_f.animate.set_opacity(1))
         self.wait(2)
 
         self.play(VGroup(rect, text_f).animate.fade(1))

@@ -87,7 +87,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'Rubik', Arial, Helvetica, sans-serif; marg
 .note {font-size: 80%}
 .cover .note {font-size: 40%}
 .slide em {font-style: normal;
-  background: linear-gradient(to right, transparent 0%, rgb(222, 255, 206) 10%, rgb(222, 255, 206) 90%, transparent);}
+   background: linear-gradient(to right, transparent 0%, rgb(222, 255, 206) 10%, rgb(222, 255, 206) 90%, transparent); 
+}
 .columns > * {box-sizing: border-box;
   width: 47.005% /*= (w - L - 4)/2/(w - L - 2) */; float: right}
 .columns > *:nth-child(odd) {clear: both; float: left}
@@ -695,10 +696,13 @@ li.visited, li.visited strong {
   color: gray;
 }
 li.active {
-  color: #601515;
+  color: black;
 }
 
 /* align stuff */
+.left {
+  text-align: left;
+}
 .center {
   text-align: center;
 }
@@ -724,6 +728,7 @@ table {
   border: solid black;
   border-width: 2px 0 2px 0;
   border-collapse: collapse;
+  margin: 0 auto;
 }
 
 thead tr th {
@@ -735,8 +740,14 @@ table th, table td {
   text-align: left;
   padding: .1em .4em;
 }
-th + th, td + td {
+th + th:not(.unpad), td + td:not(.unpad), th + td:not(.unpad), td + th:not(.unpad), td.notfirst, th.notfirst {
   padding-left: 1em;
+}
+table.all-right td {
+  text-align: right;
+}
+table.first-left td:nth-child(1), table.first-left th:nth-child(1) {
+  text-align: left;
 }
 table.first-right td:nth-child(1), table.first-right th:nth-child(1) {
   text-align: right;
@@ -746,6 +757,12 @@ table.second-right td:nth-child(2), table.second-right th:nth-child(2) {
 }
 table.third-right td:nth-child(3), table.third-right th:nth-child(3) {
   text-align: right;
+}
+table tr:nth-child(even), thead tr {
+  background-color: #eceff4;
+}
+.rotate90 {
+  transform: rotate(-90deg);
 }
 
 
@@ -792,4 +809,29 @@ table.third-right td:nth-child(3), table.third-right th:nth-child(3) {
 
 .citation + .citation {
   margin-top: .3rem;
+}
+
+.hidden-when-visited {
+  height: max-content;
+  max-height: 20em;
+  overflow: hidden;
+  transition: max-height .3s ease-in-out;
+}
+.visited .hidden-when-visited, .visited.hidden-when-visited {
+  max-height: 0;
+}
+
+.scriptsize {
+  font-size: 67%;
+}
+.smallsize {
+  font-size: 80%;
+}
+
+span.spacer {
+  display: inline-block;
+  margin: 0 .3em;
+}
+span.spacer::after {
+  content: "•";
 }
