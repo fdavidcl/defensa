@@ -83,6 +83,7 @@
  * Modified: Jun 2022 (Added audio and video as clickable elements) by David Charte
  * Modified: Jun 2022 (Automatically play videos when progressing through slides, only once)
  * Modified: Jun 2022 (Set 'p' key to play and pause videos in a slide)
+ * Modified: Jul 2022 (Allow class 'noshow' for slides that do not count in the progress bar)
  */
 
 (function() {
@@ -205,7 +206,7 @@ function initProgress()
   /* Count the number of slides, give each slide a number */
   numslides = 0;
   for (const h of document.body.children)
-    if (isStartOfSlide(h)) h.b6slidenum = ++numslides; // Save number in element
+    if (isStartOfSlide(h) && !h.classList.contains("noshow")) h.b6slidenum = ++numslides; // Save number in element
 
   /* Find all elements that are progress bars, unhide them. */
   progressElts = document.getElementsByClassName("progress");

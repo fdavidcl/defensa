@@ -835,3 +835,13 @@ span.spacer {
 span.spacer::after {
   content: "•";
 }
+
+.slide.noshow {
+  display: none;
+}
+.full .slide.noshow {
+  display: block;
+}
+.full .slide.noshow.cover {
+  display: flex;
+}

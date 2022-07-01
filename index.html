@@ -75,7 +75,7 @@ cut-in
       <p class="institution">Programa de Doctorado en Tecnologías de la
         Información y la Comunicación<br>&nbsp;</p>
       <p class="author">Francisco David Charte Luque
-        <a href="mailto:bert@w3.org" >&lt;fdavidcl@ugr.es&gt;</a></p>
+        <a href="mailto:fdavidcl@ugr.es" >&lt;fdavidcl@ugr.es&gt;</a></p>
       <p class="supervisors">
         <span class="subtitle">Directores:</span><br>
           Francisco Herrera Triguero<br>
@@ -1019,7 +1019,7 @@ plot_matrix(samples)</code></pre>
     <div class="space"></div>
   </section>
 
-  <section class="cover slide clear titleslide flex end" id=cover>
+  <section class="cover slide clear titleslide flex" id=cover>
     <div class="left-side vertical-logo">
         <span></span>
         <img src="images/logo_neg.png">
@@ -1038,7 +1038,7 @@ plot_matrix(samples)</code></pre>
       <p class="institution">Programa de Doctorado en Tecnologías de la
         Información y la Comunicación<br>&nbsp;</p>
       <p class="author">Francisco David Charte Luque
-        <a href="mailto:bert@w3.org" >&lt;fdavidcl@ugr.es&gt;</a></p>
+        <a href="mailto:fdavidcl@ugr.es" >&lt;fdavidcl@ugr.es&gt;</a></p>
       <p class="supervisors">
         <span class="subtitle">Directores:</span><br>
           Francisco Herrera Triguero<br>
@@ -1048,26 +1048,26 @@ plot_matrix(samples)</code></pre>
     </div>
   </section>
 
-  <div class="slide cover clear" id="apendice">
+  <div class="slide cover clear noshow" id="apendice">
     <img class="cover" src="images/fondo_portada.png"
     alt="Abstract nodes and connections" />
     <h1>Apéndice</h1>
   </div>
 
-  <div class="slide" id="ap2">
+  <div class="slide noshow" id="ap2">
     <h1>Resultados: critical distance plots</h1>
     <img src="images/cdpall.png" alt="Critical distance plots">
   </div>
-  <div class="slide" id="ap3">
+  <div class="slide noshow" id="ap3">
     <h1>Resultados: joyplots</h1>
     <img src="images/joyplots1.png" alt="Joyplots">
   </div>
-  <div class="slide" id="ap4">
+  <div class="slide noshow" id="ap4">
     <h1>Resultados: joyplots</h1>
     <img src="images/joyplots2.png" alt="Joyplots">
   </div>
 
-  <div class="slide" id="ap0">
+  <div class="slide noshow" id="ap0">
     <h1>Colaboraciones</h1>
     <div class="citation">Luengo, J., Moreno, R., Sevillano, I., Charte, D., Peláez-Vegas, A., Fernández-Moreno, M., ... & Herrera, F. (2022). A tutorial on the segmentation of metallographic images: Taxonomy, new MetalDAM dataset, deep learning-based ensemble model, experimental analysis and challenges. Information Fusion, 78, 232-253.</div>
     <div class="citation">Pascual-Triana, J. D., Charte, D., Andrés Arroyo, M., Fernández, A., & Herrera, F. (2021). Revisiting data complexity metrics based on morphology for overlap and imbalance: snapshot, new overlap number of balls metrics and singular problems prospect. Knowledge and Information Systems, 63(7), 1961-1989.</div>
@@ -1078,7 +1078,7 @@ plot_matrix(samples)</code></pre>
 
   </div>
 
-  <div class="slide" id="ap1">
+  <div class="slide noshow" id="ap1">
     <h1>Sobre los nombres</h1>
     <ul>
       <li>Ruta: R unsupervised deep architectures</li>
@@ -1099,6 +1099,7 @@ plot_matrix(samples)</code></pre>
         if (slides[i].classList.contains("cover") && !slides[i].classList.contains("titleslide")) {
           current_section = slides[i].querySelector("h1").textContent;
           current_section_id = slides[i].id;
+          if (slides[i].classList.contains("noshow")) continue;
           toc_slide.insertAdjacentHTML('beforeend', `<li><a class=internal href="#${current_section_id}">${current_section}</a></li>`)
         } else if (!slides[i].classList.contains("clear")) {
           slides[i].insertAdjacentHTML('beforeend', `<footer><a class=internal href="#${current_section_id}">${current_section}</a></footer>`)
