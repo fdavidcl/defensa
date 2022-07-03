@@ -48,6 +48,24 @@ cut-in
     Leaving presentation mode.
   </section>
 
+  <section class="comment small timer">
+    <span class="timer-text"></span>
+    <button class="timer-start">Empezar</button>
+  </section>
+  <script>
+    let time_mins = 50
+    let setMins = function(){
+      document.querySelector(".timer-text").textContent = `${time_mins} min. restantes`;
+      time_mins -= 1;
+    }
+    setMins()
+    document.querySelector(".timer-start").addEventListener("click", function(){
+      this.style.display = "none";
+      setInterval(setMins, 60000)
+    });
+    
+  </script>
+
   <section class="comment small">
 
     Para iniciar la presentación, haz <a href="?full">clic aquí</a> o <b>doble clic</b> en cualquiera de las diapositivas. Para navegar por las diapositivas, puedes utilizar las flechas del teclado.
@@ -246,8 +264,8 @@ cut-in
   <!-- </section> -->
 
   <section class="slide" id="a1s4">
-    <h1>Reducción de dimensionalidad</h1>
-    <h3>Autoencoder básico</h3>
+    <h1>Variantes básicas</h1>
+    <h3>Autoencoder básico (capas densas)</h3>
     <ul>
       <li>Encoder: \(y = f(x) = s_1(W^{(1)}x+b^{(1)})\)</li>
       <li>Decoder: \(x \approx g(y) = s_2(W^{(2)}y+b^{(2)})\)</li>
@@ -360,6 +378,18 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
       <li><strong>Restricted Boltzmann Machine</strong> es un modelo gráfico alternativo a AE para <i>pretraining</i></li>
     </ul>
   </section>
+
+  <div class="comment">
+    <ul>
+      <li>El análisis de componentes principales es una técnica exacta para encontrar un cambio de coordenadas en el espacio de forma que cada variable nueva explique la mayor varianza posible, sin tener correlación a las anteriores. El caso más simple, lineal del autoencoder, optimizando el error cuadrático medio, encuentra de forma aproximada la misma solución.</li>
+      <li>Análisis factorial es otra técnica lineal similar a PCA pero que se define suponiendo que hay unos factores ocultos que generan los datos. La filosofía es similar al autoencoder variacional, pero el planteamiento matemático es diferente.</li>
+      <li>El análisis discriminante lineal es una técnica lineal diferente porque sí recibe información de las clases de cada instancia, y trata de buscar una transformación lineal que las separe lo mejor posible. Una gran limitación que tiene es que el número de variables del espacio de llegada es el número de clases menos uno (p.ej. para clasificación binaria, solo genera una variable).</li>
+      <li>Existe una versión no lineal de PCA que utiliza kernels para llevarse las variables a otros espacios, y la transformación resultante depende directamente del kernel que se escoja.</li>
+      <li>Multidimensional scaling es una técnica para trasladar las distancias entre cada dos puntos a un espacio de una determinada dimensión. No se fija en las variables originales sino únicamente en las distancias entre muestras. Sammon mapping tiene un objetivo parecido pero las variables se van calculando iterativamente para optimizar su función objetivo y no siempre está asegurada la convergencia.</li>
+      <li>Isomap es una extensión de MDS que utiliza geodésicas en un grafo en lugar de distancias en línea recta, por lo que preserva toda la estructura local en lugar de solo distancias entre pares. LLE se presentó más o menos a la vez y su objetivo es parecido pero trabaja con los vecinos de cada punto.</li>
+      <li>Por último, las RBM son un modelo basado en un grafo que en su momento se usaba en lugar de los autoencoders para pre-entrenamiento de redes.</li>
+    </ul>
+  </div>
 
   <section class="slide" id="a1s9">
     <h1>Guía de diseño de autoencoders</h1>
@@ -736,7 +766,7 @@ plot_matrix(samples)</code></pre>
     </div>
   </section>
   <section class="slide" id="a3s3">
-    <h1>Taxonomía</h1>
+    <h1>Relaciones</h1>
     <img src="images/supervised-relations.png" alt="Nonstandard problem generalizations">
   </section>
 

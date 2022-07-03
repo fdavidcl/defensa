@@ -535,7 +535,7 @@ h1 .largest {
 
 /* center stuff in section slides */
 .cover:not(.titleslide) {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
@@ -786,14 +786,14 @@ table tr:nth-child(even), thead tr {
 }
 
 .anchor-bottom {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
   gap: 0px;
 }
 .anchor-right {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -844,4 +844,13 @@ span.spacer::after {
 }
 .full .slide.noshow.cover {
   display: flex;
+}
+
+.comment.timer {
+  position: fixed;
+  margin: 0;
+  top: 1em;
+  right: 1em;
+  width: max-content;
+  z-index: 100;
 }
