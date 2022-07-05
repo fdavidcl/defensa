@@ -173,7 +173,7 @@ img.fit {object-fit: contain}
 .full .comment {display: none}
 .full .slide:target {outline: none}
 
-.full .progress {position: absolute; top: 0; left: 0; height: 1px;
+.full .progress {position: absolute; top: 0; left: 0; height: 2px;
   background: linear-gradient(to right, hsla(0,100%,50%,0),var(--ugr));
   background: var(--ugr);
   z-index: 1}
@@ -564,6 +564,7 @@ h1 .largest {
     box-shadow: var(--standard-shadow);
     border-radius: var(--standard-radius);
     text-align: center;
+    box-sizing: border-box;
 }
 .box.secondary {
   background-color: #d8dee9;
@@ -588,6 +589,41 @@ h1 .largest {
   background-color: #d08770;
   color: black;
 }
+.box.transparent {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: inherit;
+  padding: 0;
+}
+
+.flex.legend {
+  margin: 0;
+  gap: .1em;
+  padding: 0;
+}
+.legend li {
+  flex-basis: 8em;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0 .5em;
+}
+.legend li:before {
+  content: "";
+  font-size: 1rem;
+}
+.legend li.secondary {
+  background-color: #d8dee9;
+}
+.legend li.labels-grouped {
+  background-color: #b48ead;
+}
+.legend li.labels-onvsall {
+  background-color: #a3be8c;
+}
+.legend li.multilabel {
+ background-color: #d08770;
+}
 
 /* hide katex generated plain markup */
 .katex-html {
@@ -605,7 +641,7 @@ h1 .largest {
 /* top or bottom bar with section title */
 footer {
   position: absolute;
-  top: 1px;
+  top: 0;
   left: 0;
   right: 0;
   background-color: lightpink;
@@ -776,13 +812,13 @@ table tr:nth-child(even), thead tr {
 }
 .flex > * {
   flex-grow: 1;
-  flex-basis: 10em;
+  flex-basis: 14em;
 }
 .flex.narrow {
   gap: .5em;
 }
 .flex.narrow > * {
-  flex-basis: 8em;
+  flex-basis: 10em;
 }
 
 .anchor-bottom {
@@ -793,7 +829,7 @@ table tr:nth-child(even), thead tr {
   gap: 0px;
 }
 .anchor-right {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -809,6 +845,18 @@ table tr:nth-child(even), thead tr {
 
 .citation + .citation {
   margin-top: .3rem;
+}
+
+.flex .citation + .citation {
+  margin: 0;
+}
+
+.nogap {
+  gap: .2em;
+}
+
+.citation.conference {
+  background: #f4ecf0;
 }
 
 .hidden-when-visited {

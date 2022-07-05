@@ -46,6 +46,64 @@ class AutoencoderDrawing(Scene):
         self.connection_lag = 0.2
         self.camera.background_color = WHITE
 
+class Denoising(AutoencoderDrawing):
+    def construct(self):
+        super().construct()
+        everything = self.build_net(5, 3, 2, 3, 5, colors=[GREY, GREY, RED, GREY, GREY])
+        everylayer = [item for layer in everything["layers"] for item in layer]
+        everyconn = [item for conn in everything["connections"] for item in conn]
+        self.add(*everylayer, *everyconn)
+        self.clear_queue()
+        blackened = [[1, 4], [0, 2], [3]]
+        for it in range(len(blackened)):
+            data = [np.random.rand() for _ in range(len(everything["layers"][0]))]
+            for idx, node in enumerate(everything["layers"][0]):
+                color = BLACK if idx in blackened[it] else GREEN
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=1 if color == BLACK else data[idx]))
+
+            self.play_queue()
+
+            for idx, node in enumerate(everything["layers"][1]):
+                color = GRAY
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=np.random.rand()))
+
+            self.play_queue()
+            for idx, node in enumerate(everything["layers"][2]):
+                color = ORANGE
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=np.random.rand()))
+
+            self.play_queue()
+            for idx, node in enumerate(everything["layers"][3]):
+                color = GRAY
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=np.random.rand()))
+
+            self.play_queue()
+            for idx, node in enumerate(everything["layers"][4]):
+                color = GREEN
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=data[idx]))
+            
+            self.play_queue()
+            self.wait(1)
+            
+            color = WHITE
+            for idx, node in enumerate(everything["layers"][0]):
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=0))
+
+            for idx, node in enumerate(everything["layers"][1]):
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=0))
+
+            for idx, node in enumerate(everything["layers"][2]):
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=0))
+
+            for idx, node in enumerate(everything["layers"][3]):
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=0))
+
+            for idx, node in enumerate(everything["layers"][4]):
+                self.animation_queue.append(node.animate(run_time=.25).set_fill(color, opacity=0))
+
+            self.play_queue()
+            
+
 class Scorer(AutoencoderDrawing):
     def construct(self):
         super().construct()
@@ -110,9 +168,64 @@ class CreateNet(AutoencoderDrawing):
         self.connect_layers(layer2, layer5)
         self.connect_layers(layer5, layer3)
         self.play_queue()
+        self.wait(1)
+
+        ########### lights!
+
+        data = [np.random.rand() for _ in range(len(layer1))]
+        for idx, node in enumerate(layer1):
+            color = GREEN
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=data[idx]))
+
+        self.play_queue()
+
+        for idx, node in enumerate(layer4):
+            color = GRAY
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=np.random.rand()))
+
+        self.play_queue()
+        for idx, node in enumerate(layer2):
+            color = ORANGE
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=np.random.rand()))
+
+        self.play_queue()
+        for idx, node in enumerate(layer5):
+            color = GRAY
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=np.random.rand()))
+
+        self.play_queue()
+        for idx, node in enumerate(layer3):
+            color = GREEN
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=data[idx]))
+        
+        self.play_queue()
+        self.wait(2)
+        
+        color = WHITE
+        for idx, node in enumerate(layer1):
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=0))
+
+        for idx, node in enumerate(layer4):
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=0))
+
+        for idx, node in enumerate(layer2):
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=0))
+
+        for idx, node in enumerate(layer5):
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=0))
+
+        for idx, node in enumerate(layer3):
+            self.animation_queue.append(node.animate(run_time=.4).set_fill(color, opacity=0))
+
+        self.play_queue()
+
+
+
+        ########### end
+
         self.wait(2)
 
-        rect = Rectangle(BLUE, 6, 6).shift(2*LEFT)
+        rect = Rectangle(BLUE, 6, 6).set_fill(BLUE, opacity=.2).shift(2*LEFT)
         text_f = MathTex("f", color=BLUE).shift(2*LEFT+2.5*UP).set_opacity(0)
         text_f.font_size = 80
         self.play(Create(rect), text_f.animate.set_opacity(1))
@@ -120,7 +233,7 @@ class CreateNet(AutoencoderDrawing):
 
         self.play(VGroup(rect, text_f).animate.fade(1))
 
-        rect = Rectangle(ORANGE, 6, 6).shift(2*RIGHT)
+        rect = Rectangle(ORANGE, 6, 6).set_fill(ORANGE, opacity=.2).shift(2*RIGHT)
         text_f = MathTex("g", color=ORANGE).shift(2*RIGHT+2.5*UP).set_opacity(0)
         text_f.font_size = 80
         self.play(Create(rect), text_f.animate.set_opacity(1))

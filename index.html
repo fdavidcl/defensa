@@ -142,14 +142,33 @@ cut-in
   <h1>Motivación</h1>
   <div class="box next"><strong>Cuestión</strong><br>¿Cómo mejorar la calidad de las características para que los métodos de aprendizaje las aprovechen?</div>
   <ul class="incremental" style="max-width: 25em; margin-left: auto; margin-right: auto;">
-      <li>¿Cómo se realiza aprendizaje de representaciones mediante modelos
-          neuronales profundos?</li>
+      <li>¿Cómo se realiza aprendizaje de representaciones con métodos alternativos mejores a los actuales?</li>
+      <li>¿Se pueden inducir comportamientos específicos en la transformación,
+          como alta dispersión, mayor robustez o separación de clases?</li>
       <li>¿Qué beneficios se pueden obtener transformando datos a una
           representación apropiada?</li>
-      <li>¿Se puede inducir un comportamiento específico en la transformación,
-          como separación de clases?</li>
   </ul>
-  <div class="box secondary next"><strong>Herramienta clave</strong><br>El <i>autoencoder</i> es un tipo de red neuronal que permite extraer características, se puede combinar con distintos objetivos/regularizaciones para modificar el comportamiento de la nueva representación</div>
+  <div class="box secondary next"><strong>Herramienta clave</strong><br>El <i>autoencoder</i> es un tipo de red neuronal que permite extraer características de forma <em>no supervisada</em>, se puede combinar con distintos objetivos/regularizaciones para modificar el comportamiento de la nueva representación</div>
+</section>
+
+<section class="comment">
+  En la actualidad se recogen cada vez más datos de muy diversas fuentes, se utilizan todo tipo de sensores en las industrias, se realizan pruebas médicas, se analizan las redes sociales, y todo ello, puesto que es cuantificable, es susceptible de procesarse para extraer información útil. El problema al que nos podemos enfrentar es que cada vez se recopilan más aspectos diferentes, lo que conlleva un aumento en el número de variables que se quieren tratar, y también un aumento de su complejidad, ya que podemos estar hablando de imágenes, señales, documentos de texto, etc. que pueden guardar patrones difíciles de analizar.
+  
+  <p></p>Esto afecta a los métodos de aprendizaje, sobre todo a los más tradicionales, que se ven muy influidos por la calidad de las variables en las que se representan los datos. Si estas tuvieran ruido, información que sobra o si la información que nos importa está muy oculta, normalmente el rendimiento de estos métodos no será el esperado.
+
+  <p></p>Cuando además estamos hablando de problemas supervisados, también hay que tener en cuenta lo compleja que pueda ser la relación entre las variables de entrada y las de salida.
+
+  <p></p>Podemos observar también que los métodos de selección y transformación de variables que venimos utilizando tienen un comportamiento bastante cerrado y presentan limitaciones.
+
+  <p></p>En esta tesis nos hemos planteado cómo podríamos mejorar la calidad de la representación de los datos, para que los métodos de aprendizaje puedan darnos mejores resultados.
+
+  <p></p>Lo primero es encontrar sistemas para aprender variables que sean diferentes y mejores que los tradicionales. El potencial que presentan hoy en día las redes neuronales profundas nos hace decantarnos por esta familia de herramientas.
+
+  <p></p>Nos preguntamos también qué estrategias podemos utilizar para alterar el comportamiento de un método que aprenda variables, para obtener algunas ventajas como que sea resistente a ruido, la representación sea más dispersa o nos separe los datos en clases.
+
+  <p></p>Queremos conocer qué soluciones podemos aportar y qué problemas se pueden abordar mediante las transformaciones convenientes del espacio de variables.
+
+  <p></p>Esto nos lleva a estudiar una clase de métodos, los autoencoders, que nos permiten extraer características mediante transformaciones no lineales que se guían según diferentes objetivos que podemos modificar a nuestro antojo, y de esa forma personalizar el espacio de variables generado.
 </section>
 
   <section class="slide anchor-bottom" id="objetivos">
@@ -269,8 +288,8 @@ cut-in
     <ul>
       <li>Encoder: \(y = f(x) = s_1(W^{(1)}x+b^{(1)})\)</li>
       <li>Decoder: \(x \approx g(y) = s_2(W^{(2)}y+b^{(2)})\)</li>
-      <li>Función objetivo: \(\mathcal J(W,b;S)= \sum_{x \in S} \mathcal L(x, (g\circ f)(x))\)
-        donde \(\mathcal L\) es <b>error reconstrucción</b>, e.g. \(\mathcal L_{\mathrm{MSE}}(u, v)=\left\lVert u - v\right\rVert_2^2~\)</li>
+      <li>Función objetivo: $$\mathcal J(\theta;S)= \sum_{x \in S} \mathcal L(x, (g\circ f)(x))$$
+        donde \(\mathcal L\) es <strong>error reconstrucción</strong>, e.g. \(\mathcal L_{\mathrm{MSE}}(u, v)=\left\lVert u - v\right\rVert_2^2~\)</li>
     </ul>
     <div class="flex">
       <div>
@@ -283,8 +302,8 @@ cut-in
       <div>
         <h3>Dominio específico</h3>
         <ul>
-          <li>Convolutional</li>
-          <li>LSTM</li>
+          <li>Imágenes: convolucional</li>
+          <li>Series temporales, secuencias: LSTM</li>
         </ul>
       </div>
     </div>
@@ -293,31 +312,34 @@ cut-in
 
   <section class="slide" id="a1s5">
     <h1>Regularización</h1>
+    <div class="box secondary">Aportar alguna propiedad adicional a la codificación</div><p></p>
     <div class="flex">
       <div>
         <h3>Sparse autoencoder</h3>
 
-        Penaliza las activaciones frecuentes de neuronas:
-        $$\Omega_{\mathrm{SAE}}(W,b;S)=\sum_{i=1}^c \mathrm{KL}(\rho\Vert \hat\rho_i)~$$
+        La mayoría de valores en la codificación son <strong>cero</strong> y pocos valores altos:
+        $$\Omega_{\mathrm{SAE}}(\theta;S)=\sum_{i=1}^c \mathrm{KL}(\rho\Vert \hat\rho_i)~$$<p></p>
+        <h3>Contractive autoencoder</h3>
       </div>
-      <div><img src="images/sparsity.png" style="width:15em"></div>
+      <div><img src="images/sparsity.png" style="width:14em"></div>
     </div>
-    <h3>Contractive autoencoder</h3>
-    Penaliza la sensibilidad a pequeños cambios en la entrada:
-    $$  \Omega_{\mathrm{CAE}}(W,b;S) = \sum_{x\in S}\left\lVert J_f(x) \right\rVert_F^2;~\left\lVert J_f(x) \right\rVert_F^2=
+    <strong>Preserva las distancias</strong> del espacio original en el generado:
+    $$  \Omega_{\mathrm{CAE}}(\theta;S) = \sum_{x\in S}\left\lVert J_f(x) \right\rVert_F^2;~\left\lVert J_f(x) \right\rVert_F^2=
   \sum_{j=1}^d\sum_{i=1}^c \left(\frac{\partial f_i}{\partial x_j}\left(x\right)\right)^2~.$$
   </section>
 
   <section class="slide" id="a1s6">
     <h1>Tolerancia a ruido</h1>
+    <div class="box secondary">Mejorar la calidad de la codificación haciéndola resistente a perturbaciones</div>
     <div class="">
-      <div>
-        <h3>Denoising autoencoder</h3>
-        Aprende a restaurar <strong>instancias ruidosas</strong>
-
-        $$\mathcal J_{\mathrm{DAE}}(W,b;S)= \sum_{x\in S}\mathbb E_{\tilde x \sim q(\tilde x \vert x)} \left[\mathcal L(x, (g\circ f)(\tilde x))\right]$$
-
-
+      <div class="flex">
+        <div>
+          <h3>Denoising autoencoder</h3>
+          Aprende a restaurar <strong>instancias ruidosas</strong>
+  
+          $$\mathcal J_{\mathrm{DAE}}(\theta;S)= \sum_{x\in S}\mathbb E_{\tilde x \sim q(\tilde x \vert x)} \left[\mathcal L(x, (g\circ f)(\tilde x))\right]$$
+        </div>
+        <div><p></p><video src="media/videos/scene/720p30/Denoising.mp4" muted autoplay loop style="width: 17em"></video></div>
       </div>
       <div>
         <h3>Robust autoencoder</h3>
@@ -331,10 +353,21 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
 
   <section class="slide" id="a1s7">
     <h1>Modelos generativos</h1>
+    <div class="box secondary">Modelar el espacio como una distribución de probabilidad que se puede muestrear</div>
     <h3>Variational autoencoder</h3>
-    <ul><li>Enfoque de inferencia variacional mediante <i>reparameterization trick</i></ul>
-    <h3>Adversarial autoencoder</h3>
-    <ul><li>Inspirados por Generative Adversarial Networks</li></ul>
+    Enfoque de inferencia variacional: maximizar la <strong>probabilidad de que los datos se generen</strong> con la distribución codificada.
+    $$\mathcal L_{\mathrm{VAE}}(\theta,\Phi,x^{(i)})=\frac 1 2 \sum_{j=1}^J\left(1+\log((\sigma_j^{(i)})^2)-(\mu_j^{(i)})^2\right)+\frac 1 L \sum_{l=1}^L \log p_{\theta}(x^{(i)}\vert z^{(i,l)})$$
+
+    <ul>
+      <li><i>Reparameterization trick</i>: \(z=\mu+\sigma\varepsilon\) donde \(\varepsilon\sim\mathcal N(0,I)\)</li>
+    </ul>
+    <div class="flex">
+      <div>
+        <h3>Adversarial autoencoder</h3>
+        Añade un <strong>discriminador</strong> que distingue codificaciones reales de muestras de la distribución.
+      </div>
+      <div><img src="images/aae.png" alt="Adversarial autoencoder" style="height: 8em"></div>
+    </div>
   </section>
 
   <section class="slide" id="a1s7.5">
@@ -369,7 +402,7 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
   <section class="slide" id="a1s8">
     <h1>Comparación con otras técnicas</h1>
     <ul class="incremental">
-      <li><strong>PCA</strong>: Idéntica solución al AE lineal optimizando ECM</li>
+      <li><strong>PCA</strong> genera solución idéntica al AE lineal optimizando ECM</li>
       <li><strong>Análisis factorial</strong> supone variables (factores) ocultas, como el VAE</li>
       <li><strong>LDA</strong> es supervisado, busca mejor separación de clases</li>
       <li><strong>Kernel PCA</strong> varía según el kernel escogido</li>
@@ -393,7 +426,7 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
 
   <section class="slide" id="a1s9">
     <h1>Guía de diseño de autoencoders</h1>
-    <div class="flex">
+    <div class="flex narrow">
       <div>
         <h3>Arquitectura</h3>
         <ul>
@@ -470,8 +503,8 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
 
   <section class="slide" id="a4s3">
     <h1>Visualización de datos</h1>
-    <strong>Contractive AE</strong>.
-    Alternativas: denoising AE, AE con regularización embedding, manifold learning, t-SNE
+    <p class="box secondary"><strong>Contractive AE</strong><br>
+    Alternativas: denoising, regularización embedding, manifold learning, t-SNE</p>
     <img src="images/a4vis.png">
     <div class="flex">
       <p class="center">CPU Activity (21 variables)</p>
@@ -483,7 +516,7 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
     <h1>Reducción de ruido</h1>
     <div class="flex">
       <div>
-        <strong>Denoising AE</strong>. Alternativas: robust AE
+        <p class="box secondary"><strong>Denoising AE</strong><br>Alternativas: robust AE</p>
         <p></p>
         <table class="second-right third-right">
           <thead><tr>
@@ -514,18 +547,16 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
     <div class="flex">
       <div>
         Tarea similar a <i>clustering</i> donde cada clúster tiene un <strong>código asociado</strong>. Los códigos similares corresponden a clusters más parecidos entre sí.
-        <p><strong>AE con regularización de ruido gaussiano</strong>.</p>
+        <p class="box secondary"><strong>AE con regularización de ruido gaussiano</strong></p>
       </div>
-      <img src="images/a4ham.png">
+      <img src="images/a4ham.png" style="width: 22em">
     </div>
   </section>
 
   <section class="slide" id="a4s6">
     <h1>Detección de anomalías</h1>
-    <strong>Denoising AE</strong>. Alternativas: AE básico, contractive AE, variational AE
-    <ul>
-      <li>No siempre detecta anomalías individuales, mejor para series temporales</li>
-    </ul>
+    <p>Se detecta anomalía cuando el error de reconstrucción supera un umbral.</p>
+    <div class="box secondary anchor-right"><strong>Denoising AE</strong><span class="space"></span>Alternativas: AE básico, contractive AE, variational AE</div>
     <img src="images/a4nom.png">
   </section>
 
@@ -533,7 +564,8 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
     <h1>Generación de instancias</h1>
     <div class="flex">
       <div>
-        <strong>Autoencoder variacional</strong>. Alternativas: AE adversarial
+        <p>Se interpola en el espacio de codificación, generando siempre datos semánticamente válidos.</p>
+        <p class="box secondary"><strong>AE variacional</strong><br>Alternativas: AE adversarial</p>
       </div>
       <img src="images/variational-matrix.png" style="width: 22em">
     </div>
@@ -902,7 +934,7 @@ plot_matrix(samples)</code></pre>
 
   <section class="slide" id="a5s7">
     <h1>Marco experimental: datasets</h1>
-    <!-- <div class="flex narrow">
+    <div class="flex narrow">
       <div class="box secondary">Appendicitis</div>
       <div class="box secondary">Arcene</div>
       <div class="box secondary">Australian</div>
@@ -929,13 +961,20 @@ plot_matrix(samples)</code></pre>
       <div class="box multilabel">Scene (mountain)</div>
       <div class="box multilabel">Scene (urban)</div>
       <div class="box secondary">Sonar</div>
-      <div class="phantom box"></div>
-    </div> -->
-    <img src="images/datasets.png">
+      <div class="box transparent">
+        <ul class="flex scriptsize legend left">
+          <li class="secondary">Binario</li>
+          <li class="labels-grouped">Clases agrupadas</li>
+          <li class="labels-onvsall">One-vs-all</li>
+          <li class="multilabel">Multietiqueta</li>
+        </ul>
+      </div>
+    </div>
+    <!-- <img src="images/datasets.png"> -->
   </section>
   <section class="slide" id="a5s8">
     <h1>Marco experimental</h1>
-    <div class="flex">
+    <div class="flex narrow">
       <div><h3>Métodos</h3><ul>      
         <li>PCA</li>
         <li>LLE</li>
@@ -1065,6 +1104,20 @@ plot_matrix(samples)</code></pre>
     </div>
     <div class="space"></div>
     <div class="space"></div>
+  </section>
+
+  <section class="slide" id="pubs">
+    <h1>Otras publicaciones</h1>
+    <div class="flex nogap">
+    <div class="citation">A tutorial on the segmentation of metallographic images: Taxonomy, new MetalDAM dataset, deep learning-based ensemble model, experimental analysis and challenges. <i>Information Fusion</i> (2022)</div>
+    <div class="citation conference">Slicer: Feature Learning for Class Separability with Least-Squares Support Vector Machine Loss and COVID-19 Chest X-Ray Case Study. <i>HAIS 2021</i></div>
+    <div class="citation">Revisiting data complexity metrics based on morphology for overlap and imbalance: snapshot, new overlap number of balls metrics and singular problems prospect. <i>Knowledge and Information Systems</i> (2021)</div>
+    <div class="citation">COVIDGR dataset and COVID-SDNet methodology for predicting COVID-19 based on chest X-ray images. <i>IEEE journal of biomedical and health informatics</i> (2020)</div>
+    <div class="citation">Artificial intelligence within the interplay between natural and artificial computation: Advances in data science, trends and applications. <i>Neurocomputing</i> (2020)</div>
+    <div class="citation conference">A showcase of the use of autoencoders in feature learning applications. <i>IWINAC 2019</i></div>
+    <div class="citation">Tips, guidelines and tools for managing multi-label datasets: The mldr. datasets R package and the Cometa data repository. <i>Neurocomputing</i> (2018)</div>
+    <div class="citation">Working with Multilabel Datasets in R: The mldr Package. <i>The R Journal</i> (2015)</div>
+  </div>
   </section>
 
   <section class="slide anchor-bottom" id="trfut">
