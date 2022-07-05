@@ -748,8 +748,9 @@ li.active {
 
 /* citations */
 .citation {
-  color: #3b4252;
+  color: #000000;
   background-color: #eceff4;
+  border: 1px solid #8fbcbb;
   font-size: 80%;
   padding: .5em 1em;
   border-radius: var(--standard-radius);
@@ -821,6 +822,14 @@ table tr:nth-child(even), thead tr {
   flex-basis: 10em;
 }
 
+.flex.ultranarrow {
+  gap: 0;
+}
+.flex.ultranarrow>* {
+  flex-basis: 8em;
+  margin: 0;
+}
+
 .anchor-bottom {
   display: inline-flex;
   flex-direction: column;
@@ -857,6 +866,7 @@ table tr:nth-child(even), thead tr {
 
 .citation.conference {
   background: #f4ecf0;
+  border-color: #b48ead;
 }
 
 .hidden-when-visited {

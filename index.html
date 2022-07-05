@@ -620,6 +620,41 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
     <div class="box">Es necesaria una implementación <b>accesible y versátil</b> de autoencoders</div>
   </section>
 
+  <section class="slide" id="a2s4">
+    <h1>Detalles de implementación</h1>
+    <ul>
+      <li>Lenguaje: <b>R</b></li>
+      <li>Biblioteca de cálculo: <b>Tensorflow/Keras</b></li>
+      <li>Repositorio oficial CRAN: <a href="https://cran.r-project.org/package=ruta">cran.r-project.org/package=ruta</a></li>
+      <li>Código fuente: <a href="https://github.com/fdavidcl/ruta">github.com/fdavidcl/ruta</a></li>
+      <li>Documentación: <a href="https://ruta.software">ruta.software</a></li>
+    </ul>
+    <div class="flex">
+      <div>
+        <b>Variantes de AE implementadas</b>
+        <ul class="flex ultranarrow">
+          <li>básico</li>
+          <li>sparse</li>
+          <li>contractive</li>
+          <li>denoising</li>
+          <li>robust</li>
+          <li>variational</li>
+        </ul>
+      </div>
+      <div>
+        <b>Tipos de capas</b>
+        <ul>
+          <li>densas</li>
+          <li>convolucionales (1D, 2D, 3D)</li>
+        </ul>
+      </div>
+      <div>
+        <img src="images/descargasruta.png" alt="Descargas acumuladas del paquete" style="height: 7em;">
+      </div>
+    </div>
+
+  </section>
+
   <section class="slide" id="a2s3">
     <h1>Arquitectura y funcionalidad</h1>
     <h3>Clases definidas</h3>
@@ -637,38 +672,6 @@ y \(\sigma\) es parámetro de \(\mathcal K\).
       <li>Evaluar un modelo con métricas de calidad</li>
       <li>Muestrear modelos generativos (variacionales)</li>
     </ul>
-
-  </section>
-
-  <section class="slide" id="a2s4">
-    <h1>Detalles de implementación</h1>
-    <ul>
-      <li>Lenguaje: <b>R</b></li>
-      <li>Biblioteca de cálculo: <b>Tensorflow/Keras</b></li>
-      <li>Código fuente: <a href="https://github.com/fdavidcl/ruta">github.com/fdavidcl/ruta</a></li>
-      <li>Documentación: <a href="https://ruta.software">ruta.software</a></li>
-    </ul>
-    <div class="flex">
-      <div>
-
-        <h3>Variantes de AE implementadas</h3>
-        <ul>
-          <li>básico</li>
-          <li>sparse</li>
-          <li>contractive</li>
-          <li>denoising</li>
-          <li>robust</li>
-          <li>variational</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Tipos de capas</h3>
-        <ul>
-          <li>densas</li>
-          <li>convolucionales (1D, 2D, 3D)</li>
-        </ul>
-      </div>
-    </div>
 
   </section>
 
@@ -907,16 +910,23 @@ plot_matrix(samples)</code></pre>
     </ul>
   </section>
 
-  <section class="slide" id="a5s5" style="color: red !important">
-    <h1>Skaler</h1>
-    <h3>Definición</h3>
-    <p>$$\Omega(\theta;S)=- \sum_{j=1}^{d}\left[P_+(j)~ \log\frac{P_+(j)}{P_-(j)} + H(j)\right]$$</p>
-
-    <p>donde \(P_+(j)\) indica la probabilidad de que la \(j\)-ésima variable <strong>tenga el valor más alto</strong> en las instancias positivas (y \(P_+(j)\) lo análogo para negativas):</p>
-
-    <p>$$ P_+(j)=\operatorname{softmax}\left(\frac{1}{N^{+}}\sum_{(x,+1)\in S}f(x)\right)(j)~,\quad  P_-(j)=\operatorname{softmax}\left(\frac{1}{N^{-}}\sum_{(x,-1)\in S}f(x)\right)(j)$$</p>
-
-    <p>$$H(j)=-\left(P(j=0)~\log(P(j=0)) + P(j=1)~\log(P(j=1))\right) $$</p>
+  <section class="slide" id="a5s5">
+    <div class="flex">
+      <div class=anchor-bottom>
+        <h1>Skaler</h1>
+        <div class="space"></div>
+        <h3>Definición</h3>
+      </div>
+    </div>
+    <div>
+      <p>$$\Omega(\theta;S)=- \sum_{j=1}^{d}\left[P_+(j)~ \log\frac{P_+(j)}{P_-(j)} + H(j)\right]$$</p>
+      
+      <p>donde \(P_+(j)\) indica la probabilidad de que la \(j\)-ésima variable <strong>tenga el valor más alto</strong> en las instancias positivas (y \(P_+(j)\) lo análogo para negativas):</p>
+      
+      <p>$$ P_+(j)=\operatorname{softmax}\left(\frac{1}{N^{+}}\sum_{(x,+1)\in S}f(x)\right)(j)~,\quad  P_-(j)=\operatorname{softmax}\left(\frac{1}{N^{-}}\sum_{(x,-1)\in S}f(x)\right)(j)$$</p>
+      
+      <p>$$H(j)=-\left(P(j=0)~\log(P(j=0)) + P(j=1)~\log(P(j=1))\right) $$</p>
+    </div>
   </section>
 
   <section class="slide anchor-bottom" id="a5s6">
@@ -1110,13 +1120,13 @@ plot_matrix(samples)</code></pre>
     <h1>Otras publicaciones</h1>
     <div class="flex nogap">
     <div class="citation">A tutorial on the segmentation of metallographic images: Taxonomy, new MetalDAM dataset, deep learning-based ensemble model, experimental analysis and challenges. <i>Information Fusion</i> (2022)</div>
-    <div class="citation conference">Slicer: Feature Learning for Class Separability with Least-Squares Support Vector Machine Loss and COVID-19 Chest X-Ray Case Study. <i>HAIS 2021</i></div>
     <div class="citation">Revisiting data complexity metrics based on morphology for overlap and imbalance: snapshot, new overlap number of balls metrics and singular problems prospect. <i>Knowledge and Information Systems</i> (2021)</div>
     <div class="citation">COVIDGR dataset and COVID-SDNet methodology for predicting COVID-19 based on chest X-ray images. <i>IEEE journal of biomedical and health informatics</i> (2020)</div>
     <div class="citation">Artificial intelligence within the interplay between natural and artificial computation: Advances in data science, trends and applications. <i>Neurocomputing</i> (2020)</div>
-    <div class="citation conference">A showcase of the use of autoencoders in feature learning applications. <i>IWINAC 2019</i></div>
     <div class="citation">Tips, guidelines and tools for managing multi-label datasets: The mldr. datasets R package and the Cometa data repository. <i>Neurocomputing</i> (2018)</div>
     <div class="citation">Working with Multilabel Datasets in R: The mldr Package. <i>The R Journal</i> (2015)</div>
+    <div class="citation conference">Slicer: Feature Learning for Class Separability with Least-Squares Support Vector Machine Loss and COVID-19 Chest X-Ray Case Study. <i>HAIS 2021</i></div>
+    <div class="citation conference">A showcase of the use of autoencoders in feature learning applications. <i>IWINAC 2019</i></div>
   </div>
   </section>
 
@@ -1133,7 +1143,7 @@ plot_matrix(samples)</code></pre>
     <div class="space"></div>
   </section>
 
-  <section class="cover slide clear titleslide flex" id=cover>
+  <section class="cover slide clear titleslide flex" id=cover2>
     <div class="left-side vertical-logo">
         <span></span>
         <img src="images/logo_neg.png">
