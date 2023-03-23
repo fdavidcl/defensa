@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang=es-es>
   <meta charset=utf-8>
-  <title>Mejoras en tratamiento de problemas de clasificación con modelos basados en autoencoders</title>
+  <title>Introducción al Deep Learning y aplicaciones en imágenes</title>
   <meta name=viewport content="width=device-width">
   <meta name="duration" content="45" />
   <link rel=stylesheet href="assets/css/simple.css">
   <script src="assets/js/b6plus.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Rubik:ital,wght@0,400;0,600;1,400;1,600&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
 
 <!--
@@ -75,148 +75,461 @@ cut-in
   </section>
 
   <section class="cover slide clear titleslide flex" id=cover>
-    <div class="left-side vertical-logo">
-        <span></span>
-        <img src="images/logo_neg.png">
-    </div>
     <div class="right-side">
       <img class="cover" src="images/fondo_portada.png"
       alt="Abstract nodes and connections" />
       <h1>
-        Mejoras en tratamiento de <br>
-        <span class="larger">problemas de clasificación</span><br>
-        con modelos basados en <br>
-        <span class="largest"><i>autoencoders</i></span>
+        Introducción al <br>
+        <span class="largest"><i>Deep Learning</i> </span><br>
+        y aplicaciones en imágenes<br>
       </h1>
-      <p class="subtitle">Tesis para la obtención del título de doctor por
-        la Universidad de Granada</p>
-      <p class="institution">Programa de Doctorado en Tecnologías de la
-        Información y la Comunicación<br>&nbsp;</p>
-      <p class="author">Francisco David Charte Luque
-        <a href="mailto:fdavidcl@ugr.es" >&lt;fdavidcl@ugr.es&gt;</a></p>
-      <p class="supervisors">
-        <span class="subtitle">Directores:</span><br>
-          Francisco Herrera Triguero<br>
-          Francisco Charte Ojeda
-      </p>
-      <p class=note>6 de julio de 2022<br>
+      <p class="subtitle"></p>
+      <p class="institution">Máster en ....<br>&nbsp;</p>
+      <p class=note>27 de marzo de 2023<br>
     </div>
   </section>
+
+  <div class="slide clear" id="about">
+    <h1>¿Quién soy?</h1>
+    <div class="author">
+      <img src="https://avatars.githubusercontent.com/u/909629?v=4" class="avatar">
+      <div>
+        <p class="name">David Charte</p>
+        <a href="mailto:david@deivi.ch" >&lt;david@deivi.ch&gt;</a>
+        <ul>
+          <li>Informático y matemático</li>
+          <li>Doctor en TIC</li>
+          <li>(Ex-)docente en la UGR</li>
+          <li>Co-fundador de  <a href="https://libreim.github.io"><img src="https://libreim.github.io/assets/images/logo.png" alt="Logo LibreIM" style="height:1em; display: inline; vertical-align: top"> LibreIM</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <section class="slide clear" id="toc">
     <h1>Índice</h1>
     <ol class="maketoc"></ol>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
-    <div class="box next">Sigue la presentación en <a href="https://deivi.ch/defensa">deivi.ch/defensa</a></div>
+    <!-- <div class="box next">Sigue la presentación en <a href="https://deivi.ch/defensa">deivi.ch/defensa</a></div> -->
   </section>
 
-  <section class="cover slide clear " id="intro">
+  <section class="cover slide clear " id="teoria">
     <img class="cover" src="images/fondo_portada.png"
     alt="Abstract nodes and connections" />
-    <h1>Introducción</h1>
+    <h1>La teoría</h1>
   </section>
-
-  <!-- <section class="slide" id="contexto">
-    <h1>Contexto</h1>
-    <ul class="incremental">
-        <li></li>
-    </ul>
-  </section> -->
-
   
-  
-  <section id="motivación" class="slide">
+  <section id="moti1" class="slide fade-in">
     <h1>Motivación</h1>
-    <div class="box secondary"><strong>Contexto</strong><br>Incremento en la recopilación de datos, su variedad y diversidad de fuentes</div><p></p>
-    <h3>Problemática</h3>
-    <ul class="incremental" style="max-width: 25em; margin-left: auto; margin-right: auto;">
-        <li>Los métodos de aprendizaje son muy sensibles al espacio de características del conjunto de datos</li>
-        <li>Las variables en que se representen los datos pueden tener ruido, redundancia, información irrelevante y oculta</li>
-        <li>La relación entre las variables y las etiquetas puede ser compleja: información insuficiente, no linealidad, alta dimensión...</li>
-        <li>Los métodos tradicionales de aprendizaje de características son limitados</li>
-    </ul>
-  </section>
+    <div class="box secondary">
+      <strong>Objetivo</strong><br>
+      Queremos un modelo que generalice una serie de puntos
+    </div><p></p>
+    <strong>Idea:</strong> interpolar los puntos con funciones "simples"
+    <div class="incremental in-place">
 
-<section class="slide" id="moti2">
-  <h1>Motivación</h1>
-  <div class="box next"><strong>Cuestión</strong><br>¿Cómo mejorar la calidad de las características para que los métodos de aprendizaje las aprovechen?</div>
-  <ul class="incremental" style="max-width: 25em; margin-left: auto; margin-right: auto;">
-      <li>¿Cómo se realiza aprendizaje de representaciones con métodos alternativos mejores a los actuales?</li>
-      <li>¿Se pueden inducir comportamientos específicos en la transformación,
-          como alta dispersión, mayor robustez o separación de clases?</li>
-      <li>¿Qué beneficios se pueden obtener transformando datos a una
-          representación apropiada?</li>
-  </ul>
-  <div class="box secondary next"><strong>Herramienta clave</strong><br>El <i>autoencoder</i> es un tipo de red neuronal que permite extraer características de forma <em>no supervisada</em>, se puede combinar con distintos objetivos/regularizaciones para modificar el comportamiento de la nueva representación</div>
-</section>
-
-<section class="comment">
-  En la actualidad se recogen cada vez más datos de muy diversas fuentes, se utilizan todo tipo de sensores en las industrias, se realizan pruebas médicas, se analizan las redes sociales, y todo ello, puesto que es cuantificable, es susceptible de procesarse para extraer información útil. El problema al que nos podemos enfrentar es que cada vez se recopilan más aspectos diferentes, lo que conlleva un aumento en el número de variables que se quieren tratar, y también un aumento de su complejidad, ya que podemos estar hablando de imágenes, señales, documentos de texto, etc. que pueden guardar patrones difíciles de analizar.
-  
-  <p></p>Esto afecta a los métodos de aprendizaje, sobre todo a los más tradicionales, que se ven muy influidos por la calidad de las variables en las que se representan los datos. Si estas tuvieran ruido, información que sobra o si la información que nos importa está muy oculta, normalmente el rendimiento de estos métodos no será el esperado.
-
-  <p></p>Cuando además estamos hablando de problemas supervisados, también hay que tener en cuenta lo compleja que pueda ser la relación entre las variables de entrada y las de salida.
-
-  <p></p>Podemos observar también que los métodos de selección y transformación de variables que venimos utilizando tienen un comportamiento bastante cerrado y presentan limitaciones.
-
-  <p></p>En esta tesis nos hemos planteado cómo podríamos mejorar la calidad de la representación de los datos, para que los métodos de aprendizaje puedan darnos mejores resultados.
-
-  <p></p>Lo primero es encontrar sistemas para aprender variables que sean diferentes y mejores que los tradicionales. El potencial que presentan hoy en día las redes neuronales profundas nos hace decantarnos por esta familia de herramientas.
-
-  <p></p>Nos preguntamos también qué estrategias podemos utilizar para alterar el comportamiento de un método que aprenda variables, para obtener algunas ventajas como que sea resistente a ruido, la representación sea más dispersa o nos separe los datos en clases.
-
-  <p></p>Queremos conocer qué soluciones podemos aportar y qué problemas se pueden abordar mediante las transformaciones convenientes del espacio de variables.
-
-  <p></p>Esto nos lleva a estudiar una clase de métodos, los autoencoders, que nos permiten extraer características mediante transformaciones no lineales que se guían según diferentes objetivos que podemos modificar a nuestro antojo, y de esa forma personalizar el espacio de variables generado.
-</section>
-
-  <section class="slide anchor-bottom" id="objetivos">
-      <h1>Objetivos</h1>
-      <div class="space"></div>
       <div class="flex">
-      <!-- <ul class="incremental"> -->
-          <div class="box next secondary">Estudio teórico y producción de <strong>recursos</strong> sobre <i>autoencoders</i></div>
-          <div class="box next secondary">Desarrollo de <strong>implementaciones</strong> de <i>autoencoders</i> accesibles </div>
-          <div class="box next secondary">Exploración de <strong>aplicaciones</strong> de los modelos basados en <i>autoencoders</i> y de problemas <strong>supervisados</strong> donde pueden tener potencial</div>
-          <div class="box next secondary"><strong>Diseño de soluciones</strong> basadas en <i>autoencoders</i> para el tratamiento de problemas supervisados</div>
-      <!-- </ul> -->
+        <img src="images/initial.png" style="max-height: 300px;">
+        <p>$$f(x)=A+Bx$$</p>
+      </div>
+      <div class="flex">
+        <img src="images/arriba.gif" style="max-height: 300px;">
+        <p>$$f(x)=A+Bx+Cx^2+Dx^3+Ex^4$$</p>
+      </div>
+      <div class="flex">
+        <img src="images/abajo.gif" style="max-height: 300px;">
+        <p>$$f(x)=A+Bx+Cx^2+Dx^3+Ex^4$$</p>
+      </div>
     </div>
-    <div class="space"></div>
-    <div class="space"></div>
   </section>
-
-  <section class="slide anchor-bottom" id="conceptos">
-    <h1>Conceptos abordados</h1>
-    <div class="space"></div>
-    <div class="flex">
-      <div class="box next secondary"><strong>Aprendizaje de representaciones</strong>
-        <div class="">
-          Construcción automática de transformaciones que llevan los datos del espacio de variables original a otro espacio según un criterio
+  <section id="moti4" class="slide">
+    <img src="images/interp_vs_aprox.png" style="max-height: 440px;">
+  </section>
+  <section id="moti5" class="slide">
+      <img src="images/chad.png" style="max-height: 380px;">
+      <p class="center">
+        \(f(x)=A+Bx\) ...ajustando \(A,B\) para <em>mínimo error</em>
+      </p>
+  </section>
+  <section id="moti6" class="slide">
+      <img src="images/plano.png" style="max-height: 380px;">
+      <p class="center">
+        \(f(x_1,x_2)=A+Bx_1+Cx_2\) ...ajustando \(A,B,C\) para <em>mínimo error</em>
+      </p>
+  </section>
+  <section id="moti7" class="slide fade-in">
+    <p class="center"><strong>¿Más variables?</strong></p>
+      <p class="center">
+        \(\displaystyle f(\textbf{x})=\sum_i w_i\textbf{x}_i\) ...ajustando \(w_i\) para <em>mínimo error</em>
+      </p>
+      <div class="incremental in-place">
+        <img src="images/imagination" style="max-height: 300px;">
+        <div>
+          <img src="images/neurona.svg" />
+          <p class="shout center next">"neurona"</p>
         </div>
       </div>
-      <div class="box next secondary"><strong>Aprendizaje profundo</strong>
-        <div class="">
-          Métodos de aprendizaje basados en sucesivas capas de transformaciones (redes neuronales artificiales)
-        </div></div>
-      <div class="box next secondary"><strong>Problemas no estándares</strong>
-        <div class="">
-          Tareas de clasificación y regresión con estructuras de entrada y/o salida diferentes a las tradicionales
-        </div></div>
-      <div class="box next secondary"><strong>Complejidad de datos</strong>
-        <div class="">
-          Aspectos de la muestra de datos que dificultan el aprendizaje de las clases: solapamiento, no linealidad, dimensionalidad, etc.
-        </div></div>
+  </section>
+  <section id="moti8" class="slide">
+    <h1>Construyendo una red (paso 1)</h1>
+    <div class="flex">
+      <div class="incremental">
+        <div><strong>Más neuronas</strong><p></p></div>
+        <div>$$\begin{align}f(\textbf{x})&=W\textbf{x}\\W&=\begin{pmatrix}w_{11}&w_{12}&\dots&w_{1n}\\w_{21}&w_{22}&\dots&w_{2n}\\w_{31}&w_{32}&\dots&w_{3n}\\\vdots&\vdots&\ddots&\vdots\\w_{m1}&w_{m2}&\dots&w_{mn}\end{pmatrix}\end{align}$$<p></p>
+        </div>
+        <div class="shout center">"capa"</div>
+      </div>
+      <img src="images/capa.svg" style="height: 380px" />
+    </div>
+  </section>
+  <section id="moti9" class="slide">
+    <h1>Construyendo una red (paso 2)</h1>
+    <div class="flex">
+      <div class="incremental">
+        <strong>Más capas</strong><span>\(f(\textbf{x})=W''(W'(W\textbf{x}))\)</span>
+      </div>
+      <img src="images/reddensa.svg" style="height: 340px" />
+    </div>
+  </section>
+  <section id="moti9.5" class="slide">
+    <h1>Falta algo...</h1>
+    <div class="incremental flex">
+      <img src="images/outputlineal.png" style="width: 50%;" />
+      <div class="center" style="width: 30%; flex-grow: 0;">
+        <img src="images/fry.png" />
+        <p></p><strong>Demasiado lineal</strong>
+      </div>
+    </div>
+  </section>
+  <section id="moti10" class="slide">
+    <h1>Construyendo una red (paso 3)</h1>
+    <div class="incremental">
+      <p><strong>Funciones de activación</strong><span>\(f(\textbf{x})=\sigma''(W''\sigma'(W'\sigma(W\textbf{x})))\) con \(\sigma\) <em>no lineal</em>, p.ej:</span></p>
+      <img src="images/activaciones.png" style="height: 340px" />
+    </div>
+  </section>
+  <section id="moti11" class="slide">
+    <iframe src="https://codesandbox.io/embed/neuralnet-playground-plotly-ud15yt?fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:430px; border:0; border-radius: 4px; overflow:hidden;"
+     title="neuralnet-playground-plotly"
+   ></iframe>
+  </section>
+  <section id="moti11-5" class="slide cover">
+    <img src="images/uniaprox1.png" class="periodico primero">
+    <img src="images/uniaprox3.png" class="periodico tercero">
+    <img src="images/uniaprox2.png" class="periodico segundo">
+  </section>
+
+  <section id="moti12" class="slide">
+    <h1>Resumen</h1>
+    <div class="incremental in-place">
+      <img src="images/supernenas1.png" style="height: 380px">
+      <img src="images/supernenas2.png" style="height: 380px">
+      <img src="images/supernenas3.png" style="height: 380px">
+      <img src="images/supernenas4.png" style="height: 380px">
+    </div>
+  </section>
+  <section id="moti13" class="slide">
+    <h1>Hay que entrenar!</h1>
+    <div class="flex stretch incremental">
+      <div class="box secondary">
+        <h2>1. <i>Forward pass</i></h2>
+        <p><strong>Propagar hacia adelante:</strong> Computar la salida de la red para unos datos</p>
+      </div>
+      <div class="box">
+        <h2>2. Calcular error</h2>
+        <p><strong>Funciones de error:</strong> Comparar la salida de la red con la deseada</p>
+      </div>
+      <div class="box">
+        <h2>3. <i>Backprop</i></h2>
+        <p><strong>Propagación hacia atrás:</strong> Técnica para calcular las derivadas del error respecto de cada parámetro</p>
+      </div>
+      <div class="box">
+        <h2>4. SGD</h2>
+        <p><strong>Descenso del gradiente estocástico:</strong> Estrategia para optimizar los parámetros buscando el mínimo error</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="moti14">
+    <h1>¿Ya está?</h1>
+    <div class="incremental">
+      <div class="shout center"><b>casi.</b></div>
+      <p>¿Y si tenemos <strong>datos estructurados</strong>?</p>
+    </div>
+    <div class="flex stretch">
+      <div class="box secondary next">
+        <h2>Texto y señales</h2>
+        <ul class="left">
+          <li>Unidades recurrentes: LSTM, GRU</li>
+          <li>Transformers (<strong>GPT</strong>!)</li>
+        </ul>
+      </div>
+      <div class="box next">
+        <h2>Imágenes y vídeo</h2>
+        <ul class="left">
+          <li>Redes convolucionales</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div id="cnn" class="slide cover clear">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
+    <h1>Redes convolucionales</h1>
+  </div>
+
+  <section id="cnn1" class="slide">
+    <h1>Operación de convolución</h1>
+    <img src="images/cnn.gif" alt="Capa convolucional" style="margin: -4rem auto;">
+    <p class="center">
+      \(W\) es <strong>más pequeña</strong> que en la capa densa \(\Rightarrow\) mejor rendimiento con menos parámetros
+    </p>
+  </section>
+
+  <section id="cnn2" class="slide">
+    <h1>Filtros convolucionales</h1>
+    <div class="flex">
+      <img src="images/kernel.png" alt="Efectos de diferentes kernels en una misma fotografía">
+      <div class="box">En la red convolucional, los <i>kernels</i> se aprenden entrenando</div>
+    </div>
+  </section>
+
+  <div id="cnn3" class="slide">
+    <h1>Estructura de una red</h1>
+    <p>En general, <strong>3 opciones</strong>:</p>
+    <div class="flex stretch">
+      <div class="box secondary">
+        <img src="images/encoder.svg" alt="Encoder imagen->código">
+      </div>
+      <div class="box secondary">
+        <img src="images/decoder.svg" alt="Encoder imagen->código">
+      </div>
+      <div class="box secondary">
+        <img src="images/encdec.svg" alt="Encoder imagen->código">
+      </div>
+    </div>
+  </div>
+
+  <div id="cnn6-1" class="slide anchor-bottom">
+    <h1>Estructura de una red</h1>
+    <div class="space"></div>
+    <div class="flex narrow">
+      <div style="flex-grow: 0">
+        <img src="images/encoder.svg" alt="Encoder imagen->código">
+        <p class="center"><strong>Encoder</strong></p>
+        <ul>
+          <li>Clasificación</li>
+          <li>Regresión</li>
+          <li>Detección de objetos</li>
+        </ul>
+      </div>
+      <div>
+        <img src="images/yolo.png" alt="YOLO">
+      </div>
+    </div>
+    <div class="space"></div>
+  </div>
+
+  <div id="cnn6-2" class="slide anchor-bottom">
+    <h1>Estructura de una red</h1>
+    <div class="space"></div>
+    <div class="flex narrow">
+      <div style="flex-grow: 0">
+        <img src="images/decoder.svg" alt="Decoder código->imagen">
+        <p class="center"><strong>Decoder</strong></p>
+        <ul>
+          <li>Generación</li>
+        </ul>
+      </div>
+      <div>
+        <img src="images/stylegan.png" alt="StyleGAN">
+      </div>
+    </div>
+    <div class="space"></div>
+  </div>
+
+  <div id="cnn6-3" class="slide anchor-bottom">
+    <h1>Estructura de una red</h1>
+    <div class="space"></div>
+    <div class="flex narrow">
+      <div >
+        <img src="images/encdec.svg" alt="Encoder-decoder">
+      </div>
+      <div>
+        <p class="center"><strong>Encoder-decoder</strong></p>
+        <ul>
+          <li>Segmentación</li>
+          <li>Cambio de estilo</li>
+          <li>...</li>
+        </ul>
+      </div>
+    </div>
+      <div>
+        <img src="images/segmentation.png" alt="Ejemplo segmentación">
+      </div>
+    <div class="space"></div>
+  </div>
+
+  <div id="cnn7" class="slide">
+    <h1>Operaciones comunes</h1>
+    <div class="flex stretch incremental">
+      <div class="box secondary">
+        <div class="flex nowrap">
+          <div>
+            <h2>Convolución</h2>
+            <p>Extraer características a partir de imágenes</p>
+          </div>
+          <img src="images/convop.gif" alt="Convolución" style="width: 3em;">
+        </div>
+      </div>
+      <div class="box secondary">
+        <div class="flex nowrap">
+          <div>
+            <h2><i>Pooling</i></h2>
+            <p>Reducir el ancho y alto de los filtros</p>
+          </div>
+          <img src="images/convstrides.gif" alt="Agregación" style="width: 3em;">
+        </div>
+      </div>
+      <div class="box secondary">
+        <div class="flex nowrap">
+          <div>
+            <h2>Convolución traspuesta</h2>
+            <p>Operación inversa de la convolución</p>
+          </div>
+          <img src="images/deconv.gif" alt="Deconvolución" style="width: 3em;">
+        </div>
+      </div>
+      <div class="box secondary">
+        <div class="flex nowrap">
+          <div>
+            <h2><i>Skip connections</i></h2>
+            <p>Recuperar información de pasos previos</p>
+          </div>
+          <img src="images/skipcon.png" alt="Skip connection" style="width: 3em;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cnn4" class="slide">
+    <h1>Ejemplos (I)</h1>
+    <img src="images/vgg16.png" alt="VGG-16">
+    <p class="center">VGG-16 para clasificación/detección</p>
+  </div>
+
+  <div id="cnn5" class="slide">
+    <h1>Ejemplos (II)</h1>
+    <img src="images/dcgan.png" alt="DCGAN">
+    <p class="center">DCGAN: <i>deep convolutional generative adversarial network</i></p>
+  </div>
+
+  <div id="cnn6" class="slide">
+    <h1>Ejemplos (III)</h1>
+    <img src="images/unet.png" alt="DCGAN" style="height: 21em">
+    <p class="center">UNet para segmentación</p>
+  </div>
+
+  <div class="slide cover clear" id="impl">
+    <img class="cover" src="images/fondo_portada.png"
+    alt="Abstract nodes and connections" />
+    <h1>Implementación</h1>
+  </div>
+
+  <div class="slide anchor-bottom" id="impl1">
+    <h1>Lenguajes de programación</h1>
+    <div class="space"></div>
+    <div class="flex incremental stretch">
+      <div class="box secondary">
+        <p><img src="images/Python.svg" alt="Logo Python"></p>
+        <p><strong>Python</strong></p>
+      </div>
+      <div class="box secondary">
+        <p>
+          <img src="images/c++.svg" alt="Logo C++" style="width:30%; margin: 0 .4rem; display: inline-block;">
+          <img src="images/js.png" alt="Logo JavaScript" style="width:30%; margin: 0 .4rem; display: inline-block;">
+          <img src="images/r.svg" alt="Logo R" style="width:30%; margin: 0 .4rem; display: inline-block;">
+          <img src="images/julia.svg" alt="Logo Julia" style="width:30%; margin: 0 .4rem; display: inline-block;">
+        </p>
+      </div>
     </div>
     <div class="space"></div>
     <div class="space"></div>
-  </section>
+  </div>
 
+  <div class="slide anchor-bottom" id="impl1">
+    <h1>Frameworks</h1>
+    <div class="space"></div>
+    <div class="flex incremental narrow stretch">
+      <div class="box secondary">
+        <p><strong>TensorFlow</strong></p>
+        <p><img src="images/tf.png" alt="Logo Tensorflow"></p>
+      </div>
+      <div class="box secondary">
+        <p><strong>Pytorch</strong></p>
+        <img src="images/pytorch.png" alt="Logo Pytorch">
+      </div>
+      <div class="box secondary">
+        <p>
+          <img src="images/mxnet.png" alt="Logo MXNet">
+          <img src="images/jax.png" alt="Logo Jax">
+          <img src="images/flux.png" alt="Logo Flux">
+        </p>
+      </div>
+    </div>
+    <div class="space"></div>
+    <div class="space"></div>
+  </div>
+
+  <div id="impl4" class="slide">
+    <p class="center"><img src="images/vgg16.png" alt="VGG-16" style="height: 5em; display: inline-block;">
+    <img src="images/Python.svg" alt="Logo Python" style="height: 5em; display: inline-block;">
+    <img src="images/tf.png" alt="Logo Tensorflow" style="height: 5em; display: inline-block;"></p>
+    <pre>
+<code style="max-height: 19em; overflow: auto;"># Block 1
+x = Conv2D(64, (3, 3), activation="relu", padding="same", name="block1_conv1")(img_input)
+x = Conv2D(64, (3, 3), activation="relu", padding="same", name="block1_conv2")(x)
+x = MaxPooling2D((2, 2), strides=(2, 2), name="block1_pool")(x)
+# Block 2
+x = Conv2D(128, (3, 3), activation="relu", padding="same", name="block2_conv1")(x)
+x = Conv2D(128, (3, 3), activation="relu", padding="same", name="block2_conv2")(x)
+x = MaxPooling2D((2, 2), strides=(2, 2), name="block2_pool")(x)
+# Block 3
+x = Conv2D(256, (3, 3), activation="relu", padding="same", name="block3_conv1")(x)
+x = Conv2D(256, (3, 3), activation="relu", padding="same", name="block3_conv2")(x)
+x = Conv2D(256, (3, 3), activation="relu", padding="same", name="block3_conv3")(x)
+x = MaxPooling2D((2, 2), strides=(2, 2), name="block3_pool")(x)
+# Block 4
+x = Conv2D(512, (3, 3), activation="relu", padding="same", name="block4_conv1")(x)
+x = Conv2D(512, (3, 3), activation="relu", padding="same", name="block4_conv2")(x)
+x = Conv2D(512, (3, 3), activation="relu", padding="same", name="block4_conv3")(x)
+x = MaxPooling2D((2, 2), strides=(2, 2), name="block4_pool")(x)
+# Block 5
+x = Conv2D(512, (3, 3), activation="relu", padding="same", name="block5_conv1")(x)
+x = Conv2D(512, (3, 3), activation="relu", padding="same", name="block5_conv2")(x)
+x = Conv2D(512, (3, 3), activation="relu", padding="same", name="block5_conv3")(x)
+x = MaxPooling2D((2, 2), strides=(2, 2), name="block5_pool")(x)
+# Classification block
+x = Flatten(name="flatten")(x)
+x = Dense(4096, activation="relu", name="fc1")(x)
+x = Dense(4096, activation="relu", name="fc2")(x)
+x = Dense(classes, activation=classifier_activation, name="predictions")(x)
+    </code></pre>
+    <p class="center">Fuente: <a href="https://github.com/keras-team/keras/blob/v2.11.0/keras/applications/vgg16.py#L48">keras-team/keras/keras/applications/vgg16.py</a></p>
+  </div>
+
+  
+
+  <img src="images/isthisatensor.jpg" class="next" style="margin-top: -22em;" alt="Any matrix. Is this a tensor?"> 
+
+<!--
   <section class="slide section level2" id="quees">
       <h1>¿Qué es un <i>autoencoder</i>?</h1>
       <video src="media/videos/scene/720p30/CreateNet.mp4" onclick="this.paused?this.play():this.pause()" muted preload="auto"></video>
   </section>
-
 
   <section class="slide cover clear" id="a1s1">
     <img class="cover" src="images/fondo_portada.png"
@@ -228,22 +541,12 @@ cut-in
       <blockquote>
         Charte, D., Charte, F., García, S., del Jesus, M. J., & Herrera, F. (2018). A practical tutorial on autoencoders for nonlinear feature fusion: Taxonomy, models, software and guidelines. <i>Information Fusion</i>, 44, 78-96.
       </blockquote>
-      <!--ul>
-        <li>Taxonomía</li>
-        <li>Variantes</li>
-        <li>Aplicaciones</li>
-      </ul-->
     </div>
     <img class="preview" src="images/paper1.png">
   </section>
 
   <section class="slide" id="a1s2">
     <h1>Taxonomía</h1>
-    <ul>
-      <!-- <li><b>Fusión de características</b>: combinar variables para mejorar el aprendizaje, eliminar información redundante e irrelevante</li> -->
-      <!-- <li><b>Autoencoders</b>: mecanismos de fusión de características basados en aprendizaje profundo</li> -->
-    </ul>
-    <!-- <img src="images/taxonomy.png"> -->
     <div class="flex">
       <div class="box secondary">
         <h3>Según estructura datos</h3>
@@ -277,10 +580,6 @@ cut-in
     </div>
   </section>
 
-  <!-- <section class="slide" id="a1s3">
-    <h1>Taxonomía</h1>
-    <iframe src="assets/taxonomy.pdf#toolbar=0"></iframe> -->
-  <!-- </section> -->
 
   <section class="slide" id="a1s4">
     <h1>Variantes básicas</h1>
@@ -983,7 +1282,6 @@ plot_matrix(samples)</code></pre>
         </ul>
       </div>
     </div>
-    <!-- <img src="images/datasets.png"> -->
   </section>
   <section class="slide" id="a5s8">
     <h1>Marco experimental</h1>
@@ -1024,47 +1322,10 @@ plot_matrix(samples)</code></pre>
         <li>Error reconstrucción: entropía cruzada</li>
       </ul></div>
     </div>
-    <!-- <table>
-      <thead>
-        <th>Método</th>
-        <th>Descripción</th>
-      </thead>
-      <tr>
-        <td>PCA</td>
-        <td>Maximización varianza (lineal)</td>
-      </tr>
-      <tr>
-        <td>LLE</td>
-        <td>Manifold learning (vecindarios)</td>
-      </tr>
-      <tr>
-        <td>Isomap</td>
-        <td>Manifold learning (basado en MDS)</td>
-      </tr>
-      <tr>
-        <td>AE básico</td>
-        <td>Red neuronal para codificación</td>
-      </tr>
-      <tr>
-        <td>Scorer</td>
-        <td>AE propuesto con ratio Fisher</td>
-      </tr>
-      <tr>
-        <td>Skaler</td>
-        <td>AE propuesto con Kullback-Leibler</td>
-      </tr>
-      <tr>
-        <td>Slicer</td>
-        <td>AE propuesto con objetivo LSSVM</td>
-      </tr>
-    </table> -->
   </section>
     
   <section class="slide" id="a5s9">
     <h1>Resultados: rankings</h1>  
-    <!-- <div class="flex">
-      <img src="images/results.png" alt="Tabla de resultados">
-    </div> -->
     <table class="smallsize all-right first-left">
 <thead><tr>  <th></th><th>                             </th><th> PCA                        </th><th> LLE                </th><th> Isomap </th><th> AE                </th><th> Skaler                      </th><th> Scorer </th><th> Slicer </td></tr></thead>
 <tr>    <td colspan=2> F1                          </td><td> \(\otimes\) 5.885          </td><td> \(\otimes\) 6.115  </td><td> \(\otimes\) 5.731  </td><td> \(\otimes\) 4.038 </td><td> \(\bigstar\) <b>1.577</b> </td><td> 2.308              </td><td> 2.346 </td></tr>
@@ -1215,6 +1476,8 @@ plot_matrix(samples)</code></pre>
     </ul>
   </div>
 
+-->
+
   <script>
     (function() {
       let toc_slide = document.querySelector(".maketoc")
@@ -1224,10 +1487,12 @@ plot_matrix(samples)</code></pre>
 
       for (let i = 0; i < slides.length; ++i) {
         if (slides[i].classList.contains("cover") && !slides[i].classList.contains("titleslide")) {
-          current_section = slides[i].querySelector("h1").textContent;
-          current_section_id = slides[i].id;
-          if (slides[i].classList.contains("noshow")) continue;
-          toc_slide.insertAdjacentHTML('beforeend', `<li><a class=internal href="#${current_section_id}">${current_section}</a></li>`)
+          if (slides[i].querySelector("h1")) {
+            current_section = slides[i].querySelector("h1").textContent;
+            current_section_id = slides[i].id;
+            if (slides[i].classList.contains("noshow")) continue;
+            toc_slide.insertAdjacentHTML('beforeend', `<li><a class=internal href="#${current_section_id}">${current_section}</a></li>`)
+          }
         } else if (!slides[i].classList.contains("clear")) {
           slides[i].insertAdjacentHTML('beforeend', `<footer><a class=internal href="#${current_section_id}">${current_section}</a></footer>`)
         }

@@ -32,7 +32,7 @@
 
 /* Common layout independent of slide mode */
 :root {
-  --ugr: rgb(233,44,48);
+  --ugr: rgb(48,44,233);
   --complement: #1ca937;
   --standard-shadow:
   0 2.8px 2.2px rgba(0, 0, 0, 0.05),
@@ -47,8 +47,22 @@ html {font: 1em/1.3 'Source Sans Pro', Helvetica Neue,
 body {background: #333; counter-reset: slide; margin: 2em;
   color: white}
 address {/*font-family: serif*/}
-h1 {font-size: 2em; line-height: 1.1; margin: 0 0 0.3em 0;}
-h1, h2, h3, h4, h5, h6 {font-family: 'Rubik', Arial, Helvetica, sans-serif; margin-bottom: .6rem;}
+h1 {
+  font-size: 2em; 
+  line-height: 1.1; 
+  margin: 0 0 0.3em 0;
+}
+.slide:not(.titleslide):not(.cover) h1 {
+  transform: rotate(-2deg) translateY(-10px);
+  text-align: center;
+  text-shadow: -3px -3px 0 rgba(233, 44, 48, .2);
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: Inconsolata, Courier New, monospace; 
+  margin-bottom: .6rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
 .full, .slide {width: 40rem; /*= w */ height: 30rem; /*= N */}
 .slide {
   color: black; 
@@ -68,6 +82,7 @@ h1, h2, h3, h4, h5, h6 {font-family: 'Rubik', Arial, Helvetica, sans-serif; marg
     bottom right / 5.5em /*= L */ 100%
     linear-gradient(hsl(270,45%,25%), hsl(270,42%,92%)) no-repeat, white;
   background: white;
+  overflow: hidden;
 }
 .slide:target {outline: lime solid 0.5rem; outline-offset: 1rem}
 .slide.side {padding-left: 13.1rem /*= (w - 1 - (L + 1) - 1) * 30% + 2 */}
@@ -121,6 +136,7 @@ li ul, li ol {margin: 0}
 ul > li {list-style: none}
 ul > li::before {content: "\25A0"; display: inline-block; width: 1em;
   margin-left: -1em; color: var(--ugr)}
+.box:not(.secondary) ul > li::before {color: silver}
 
 /* Explicit placement on a 3x3 grid */
 .place {position: absolute; box-sizing: border-box;
@@ -159,7 +175,7 @@ img.fit {object-fit: contain}
 
 /* Slide numbers in upper right corner */
 .slide::after {content: counter(slide); 
-  color: #601515; position: absolute;
+  color: #151560; position: absolute;
   top: .4rem; line-height: 1; font-weight: bold; right: 1rem;
   text-align: center}
 .slide.clear::after {content: none}
@@ -195,7 +211,8 @@ img.fit {object-fit: contain}
 .full .incremental.in-place > *, .full .overlay.in-place > * {grid-area: a}
 .full .incremental.in-place > .visited:not(.active):not(:last-child),
 .full .overlay.in-place > .visited:not(.active):not(:last-child) {
-  visibility: hidden}
+  visibility: hidden;
+}
 
 /* A list as a tree structure with box-drawing characters */
 .tree {list-style: none; font: 1em/1 monospace;
@@ -221,6 +238,17 @@ p.shout {margin: 1rem 0}
 .full .incremental > :not(.active):not(.visited),
 .full .overlay > :not(.active):not(.visited),
 .full .next:not(.active):not(.visited) {visibility: hidden}
+@media not screen and (prefers-reduced-motion: reduce) {
+  .full .incremental.in-place > *, .full .overlay.in-place > * {grid-area: a}
+  .full .incremental.in-place > .visited:not(.active):not(:last-child),
+  .full .overlay.in-place > .visited:not(.active):not(:last-child) {
+    animation: fade-out .5s 1;
+  }
+
+  .full .incremental > .active, .full .overlay > .active, .full .next.active {
+    animation: fade-in .5s 1;
+  }
+}
 
 /* Transitions between slides */
 @media not screen and (prefers-reduced-motion: reduce) {
@@ -242,6 +270,10 @@ p.shout {margin: 1rem 0}
   @keyframes fade-in {
     from {opacity: 0}
     to {opacity: 1}
+  }
+  @keyframes fade-out {
+    from {opacity: 1; visibility: visible;}
+    to {opacity: 0; visibility: hidden;}
   }
 
   /* Transition: slide-in */
@@ -383,7 +415,106 @@ p.shout {margin: 1rem 0}
     to {transform: translate(0%, 0%)}
   }
 
+  /* Transition: blur */
+  .full .slide.blur.visited,
+  .blur .slide.visited {animation: blur 1s 1 ease-in}
+  .full .slide.blur + .active,
+  .full .slide.blur + .comment + .active,
+  .blur .slide.active {animation: unblur 1s 1 ease-out}
+  @keyframes blur {
+    from {opacity:1; visibility: visible; z-index: 1;}
+    to {filter: blur(40px); opacity: 0; visibility: hidden; z-index: 0;}
+  }
+  @keyframes unblur {
+    from {filter: blur(40px)}
+    50% {filter: blur(20px)}
+    to {filter: blur(0px)}
+  }
+
+  /* Transition: glitch */
+  .full .slide.glitch.visited,
+  .glitch .slide.visited {animation: glitch .5s 1 ease-in}
+  .full .slide.glitch + .active,
+  .full .slide.glitch + .comment + .active,
+  .glitch .slide.active {animation: unglitch .5s 1 ease-out}
+  @keyframes glitch {
+    from {opacity:1; visibility: visible; z-index: 1;}
+    100% {transform: scale(1.2); opacity: 0; visibility: hidden; z-index: 0; }
+  }
+  @keyframes unglitch {
+    from {transform: scale(0.9);}
+    to {transform: none;}
+  }
+
+  .full .slide.active .periodico {
+    opacity: 0;
+    transform: scale(0);
+    animation-name: periodico;
+    animation-duration: 1.2s;
+    animation-iteration-count: 1 ;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  @keyframes periodico {
+    from {
+      opacity: .2; 
+      transform: 
+        scale(0.1) 
+        rotate(calc(var(--final-rotation) + 0deg)); 
+      filter: blur(10px);
+    }
+    25% {
+      opacity: .6; 
+      transform: 
+        scale(0.3) 
+        rotate(calc(var(--final-rotation) + 360deg));
+      filter: blur(5px);}
+    50% {
+      opacity: 1; 
+      transform: 
+        scale(0.6) 
+        rotate(calc(var(--final-rotation) + 720deg));
+      filter: blur(3px);}
+    75% {
+      opacity: 1; 
+      transform: 
+        scale(0.9) 
+        rotate(calc(var(--final-rotation) + 1080deg));
+      filter: blur(2px);}
+    to {
+      opacity: 1; 
+      transform: 
+        scale(1) 
+        rotate(calc(var(--final-rotation) + 1440deg));
+      filter: none;}
+  }
+
 } /* End of @media not screen and (prefers-reduced-motion: reduce) */
+
+
+.periodico {
+  box-shadow: 10px -10px 8px rgba(0,0,0,0.4);
+  border: 4px solid #505050;
+  width: 16rem;
+  transform: rotate(var(--final-rotation));
+}
+.periodico.primero {
+  --final-rotation: 30deg;
+  animation-delay: 0s;
+  z-index: 1;
+}
+.periodico.segundo {
+  --final-rotation: -30deg;
+  animation-delay: .6s;
+  z-index: 2;
+}
+.periodico.tercero {
+  --final-rotation: -10deg;
+  animation-delay: 1.2s;
+  z-index: 3;
+  width: 20rem;
+}
+
 
 .full abbr {text-decoration: none}
 
@@ -482,12 +613,6 @@ body.framed .progress {display: none}
   font-weight: 300;
   letter-spacing: 1px;
 }
-.titleslide .author {
-  font-weight: bold;
-}
-.titleslide  .supervisors {
-  font-weight: bold;
-}
 .titleslide h1 {
     font-family: 'Noto Sans', Noto Sans, Helvetica, Arial, sans-serif;
     font-size: 130%;
@@ -512,13 +637,41 @@ h1 .largest {
   text-decoration: none;
 }
 
+.author {
+  padding: 1em;
+  border: 1px solid silver;
+  border-radius: 12px;
+  background-color: #e4e4e4;
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  font-size: 1.4rem;
+  line-height: 1em;
+  gap: 1em;
+  box-shadow: 0 6px 10px 2px rgba(0,0,0,.1);
+}
+.author .avatar {
+  border-radius: 100%;
+  border: 4px solid silver;
+}
+.author .name {
+  margin-top: 0;
+}
+.author a {
+  text-decoration: none;
+}
+.author li {
+  margin-bottom: .2em;
+}
+.author li::before {
+  font-size: 1rem;
+}
 
 /* ugr logo in title slide */
 .vertical-logo {
   margin: -2rem 0 -1rem -1rem;
   max-width:  4em;
   min-width:  4em;
-  background-color: var(--ugr);
+  /* background-color: var(--ugr); */
   display: flex;
   flex-flow: column nowrap;
 }
@@ -559,17 +712,17 @@ h1 .largest {
     display: block;
     padding: .3rem 1rem;
     border: 1px solid var(--ugr);
-    background-color: rgb(225, 81, 84);
+    background-color: rgb(89, 92, 238);
     color: white;
-    box-shadow: var(--standard-shadow);
     border-radius: var(--standard-radius);
     text-align: center;
     box-sizing: border-box;
+    transition: border-color .2s ease, box-shadow .2s ease;
 }
 .box.secondary {
-  background-color: #d8dee9;
+  background-color: #e4e4e4;
   color: black;
-  border-color: #88c0d0;
+  border-color: #cccccc;
 }
 .box:not(.secondary) a {
   color: white;
@@ -595,6 +748,13 @@ h1 .largest {
   box-shadow: none;
   color: inherit;
   padding: 0;
+}
+.box.active, .box.secondary.active {
+  border-color: lightblue;
+  box-shadow: var(--standard-shadow);
+}
+.box.visited {
+  filter: saturate(80%);
 }
 
 .flex.legend {
@@ -641,14 +801,16 @@ h1 .largest {
 /* top or bottom bar with section title */
 footer {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: lightpink;
-  color: #601515;
-  padding: .1rem 1rem;
+  top: -12px;
+  left: -5px;
+  right: -5px;
+  background-color: lightblue;
+  color: #151560;
+  padding: .3rem 1.2rem .1rem;
   font-size: 90%;
   letter-spacing: -.5px;
+  transform: rotate(-2deg);
+  text-align: left;
 }
 
 /* small comments */
@@ -702,10 +864,15 @@ ol li::before {
 }
 
 strong {
-  font-weight: bold;
-  color: var(--complement);
+  /* font-weight: bold;
+  color: var(--complement); */
+  background-color: #151560;
+  padding: 1px .25rem;
+  border-radius: .25rem;
+  color: white;
 }
 .box strong, blockquote strong {
+  background-color: transparent;
   color: inherit;
 }
 
@@ -810,6 +977,10 @@ table tr:nth-child(even), thead tr {
   flex-wrap: wrap;
   gap: 1em;
   justify-content: space-evenly;
+  align-items: center;
+}
+.flex.stretch {
+  align-items: stretch;
 }
 .flex > * {
   flex-grow: 1;
@@ -829,6 +1000,10 @@ table tr:nth-child(even), thead tr {
   flex-basis: 8em;
   margin: 0;
 }
+.flex.nowrap {
+  flex-wrap: nowrap;
+}
+
 
 .anchor-bottom {
   display: inline-flex;
