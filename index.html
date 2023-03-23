@@ -460,10 +460,9 @@ cut-in
     <div class="space"></div>
   </div>
 
-  <div class="slide anchor-bottom" id="impl1">
+  <div class="slide anchor-bottom" id="impl2">
     <h1>Frameworks</h1>
-    <div class="space"></div>
-    <div class="flex incremental narrow stretch">
+    <div class="flex incremental ultranarrow stretch" style="margin: 0 5rem; gap: .5rem">
       <div class="box secondary">
         <p><strong>TensorFlow</strong></p>
         <p><img src="images/tf.png" alt="Logo Tensorflow"></p>
@@ -481,9 +480,15 @@ cut-in
       </div>
     </div>
     <div class="space"></div>
-    <div class="space"></div>
+    <img src="images/library_trends.png" class="next" alt="Google trends para Tensorflow, Pytorch y otras bibliotecas"> 
   </div>
 
+
+  <div class="slide cover clear" id="impl3">
+    <img src="images/isthisatensor.jpg" alt="Any matrix. Is this a tensor?"> 
+  </div>
+
+  
   <div id="impl4" class="slide">
     <p class="center"><img src="images/vgg16.png" alt="VGG-16" style="height: 5em; display: inline-block;">
     <img src="images/Python.svg" alt="Logo Python" style="height: 5em; display: inline-block;">
@@ -521,962 +526,99 @@ x = Dense(classes, activation=classifier_activation, name="predictions")(x)
     <p class="center">Fuente: <a href="https://github.com/keras-team/keras/blob/v2.11.0/keras/applications/vgg16.py#L48">keras-team/keras/keras/applications/vgg16.py</a></p>
   </div>
 
-  
-
-  <img src="images/isthisatensor.jpg" class="next" style="margin-top: -22em;" alt="Any matrix. Is this a tensor?"> 
-
-<!--
-  <section class="slide section level2" id="quees">
-      <h1>¿Qué es un <i>autoencoder</i>?</h1>
-      <video src="media/videos/scene/720p30/CreateNet.mp4" onclick="this.paused?this.play():this.pause()" muted preload="auto"></video>
-  </section>
-
-  <section class="slide cover clear" id="a1s1">
-    <img class="cover" src="images/fondo_portada.png"
-    alt="Abstract nodes and connections" />
-    <div>
-      <div class="flex">
-        <h1>Tutorial práctico sobre autoencoders</h1>
-      </div>
-      <blockquote>
-        Charte, D., Charte, F., García, S., del Jesus, M. J., & Herrera, F. (2018). A practical tutorial on autoencoders for nonlinear feature fusion: Taxonomy, models, software and guidelines. <i>Information Fusion</i>, 44, 78-96.
-      </blockquote>
-    </div>
-    <img class="preview" src="images/paper1.png">
-  </section>
-
-  <section class="slide" id="a1s2">
-    <h1>Taxonomía</h1>
-    <div class="flex">
-      <div class="box secondary">
-        <h3>Según estructura datos</h3>
-        <ul class="left">
-          <li>AE básico</li>
-          <li>Convolucional</li>
-          <li>Con LSTM</li>
-        </ul>
-      </div>
-      <div class="box secondary">
-        <h3>Regularización codificación</h3>
-        <ul class="left">
-          <li>Sparse</li>
-          <li>Contractive</li>
-        </ul>
-      </div>
-      <div class="box secondary">
-        <h3>Tolerancia a ruido</h3>
-        <ul class="left">
-          <li>Denoising</li>
-          <li>Robust</li>
-        </ul>
-      </div>
-      <div class="box secondary">
-        <h3>Modelo generativo</h3>
-        <ul class="left">
-          <li>Variacional</li>
-          <li>Adversarial</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="slide" id="a1s4">
-    <h1>Variantes básicas</h1>
-    <h3>Autoencoder básico (capas densas)</h3>
-    <ul>
-      <li>Encoder: \(y = f(x) = s_1(W^{(1)}x+b^{(1)})\)</li>
-      <li>Decoder: \(x \approx g(y) = s_2(W^{(2)}y+b^{(2)})\)</li>
-      <li>Función objetivo: $$\mathcal J(\theta;S)= \sum_{x \in S} \mathcal L(x, (g\circ f)(x))$$
-        donde \(\mathcal L\) es <strong>error reconstrucción</strong>, e.g. \(\mathcal L_{\mathrm{MSE}}(u, v)=\left\lVert u - v\right\rVert_2^2~\)</li>
-    </ul>
-    <div class="flex">
+  <div id="impl5" class="slide">
+    <h1>Recursos</h1>
+    <div class="incremental in-place">
+      <video src="https://media3.giphy.com/media/ZQBH5pvoyiZSE/giphy.mp4?cid=ecf05e47oiasmlzsa6tjukdfoqn527jyjxsbxej7p12phlka&rid=giphy.mp4&ct=g" autoplay loop playsinline style="width: 100%"></video>
       <div>
-        <h3>Variaciones</h3>
-        <ul>
-          <li>Deep</li>
-          <li>Stacked</li>
-        </ul>
+        <img src="images/gpu.jpg" alt="GPU NVidia gaming" style="height: 20rem">
+        <p class="center"><strong>Tu GPU gaming:</strong> Para modelos pequeños</p>
       </div>
       <div>
-        <h3>Dominio específico</h3>
-        <ul>
-          <li>Imágenes: convolucional</li>
-          <li>Series temporales, secuencias: LSTM</li>
-        </ul>
-      </div>
-    </div>
-  
-  </section>
-
-  <section class="slide" id="a1s5">
-    <h1>Regularización</h1>
-    <div class="box secondary">Aportar alguna propiedad adicional a la codificación</div><p></p>
-    <div class="flex">
-      <div>
-        <h3>Sparse autoencoder</h3>
-
-        La mayoría de valores en la codificación son <strong>cero</strong> y pocos valores altos:
-        $$\Omega_{\mathrm{SAE}}(\theta;S)=\sum_{i=1}^c \mathrm{KL}(\rho\Vert \hat\rho_i)~$$<p></p>
-        <h3>Contractive autoencoder</h3>
-      </div>
-      <div><img src="images/sparsity.png" style="width:14em"></div>
-    </div>
-    <strong>Preserva las distancias</strong> del espacio original en el generado:
-    $$  \Omega_{\mathrm{CAE}}(\theta;S) = \sum_{x\in S}\left\lVert J_f(x) \right\rVert_F^2;~\left\lVert J_f(x) \right\rVert_F^2=
-  \sum_{j=1}^d\sum_{i=1}^c \left(\frac{\partial f_i}{\partial x_j}\left(x\right)\right)^2~.$$
-  </section>
-
-  <section class="slide" id="a1s6">
-    <h1>Tolerancia a ruido</h1>
-    <div class="box secondary">Mejorar la calidad de la codificación haciéndola resistente a perturbaciones</div>
-    <div class="">
-      <div class="flex">
-        <div>
-          <h3>Denoising autoencoder</h3>
-          Aprende a restaurar <strong>instancias ruidosas</strong>
-  
-          $$\mathcal J_{\mathrm{DAE}}(\theta;S)= \sum_{x\in S}\mathbb E_{\tilde x \sim q(\tilde x \vert x)} \left[\mathcal L(x, (g\circ f)(\tilde x))\right]$$
-        </div>
-        <div><p></p><video src="media/videos/scene/720p30/Denoising.mp4" muted autoplay loop style="width: 17em"></video></div>
+        <img src="images/a100.jpg" alt="GPU NVidia A100" style="height: 20rem">
+        <p class="center">NVIDIA A100: <a href="https://github.com/Stability-AI/stablediffusion"><strong>Stable Diffusion</strong></a> se entrenó en una de estas</p>
       </div>
       <div>
-        <h3>Robust autoencoder</h3>
-        <strong>Correntropía</strong>: función objetivo menos sensible a ruido
-        $$\mathcal L_{\mathrm{MCC}}(u, v)=-\sum_{k=1}^d\mathcal K_{\sigma}(u_k-v_k),\text{ donde } \mathcal K_{\sigma}(\alpha)=\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{\alpha^2}{2\sigma^2}\right),$$
+        <img src="images/dgxa100.jpg" alt="Servidor NVidia DGX A100" style="height: 20rem">
+        <p class="center">DGX A100: Tiene 8x NVIDIA A100 (hasta <strong>640 GB VRAM!</strong>)</p>
+      </div>
       
-y \(\sigma\) es parámetro de \(\mathcal K\).
-      </div>
     </div>
-  </section>
-
-  <section class="slide" id="a1s7">
-    <h1>Modelos generativos</h1>
-    <div class="box secondary">Modelar el espacio como una distribución de probabilidad que se puede muestrear</div>
-    <h3>Variational autoencoder</h3>
-    Enfoque de inferencia variacional: maximizar la <strong>probabilidad de que los datos se generen</strong> con la distribución codificada.
-    $$\mathcal L_{\mathrm{VAE}}(\theta,\Phi,x^{(i)})=\frac 1 2 \sum_{j=1}^J\left(1+\log((\sigma_j^{(i)})^2)-(\mu_j^{(i)})^2\right)+\frac 1 L \sum_{l=1}^L \log p_{\theta}(x^{(i)}\vert z^{(i,l)})$$
-
-    <ul>
-      <li><i>Reparameterization trick</i>: \(z=\mu+\sigma\varepsilon\) donde \(\varepsilon\sim\mathcal N(0,I)\)</li>
-    </ul>
-    <div class="flex">
-      <div>
-        <h3>Adversarial autoencoder</h3>
-        Añade un <strong>discriminador</strong> que distingue codificaciones reales de muestras de la distribución.
-      </div>
-      <div><img src="images/aae.png" alt="Adversarial autoencoder" style="height: 8em"></div>
-    </div>
-  </section>
-
-  <section class="slide" id="a1s7.5">
-    <h1>Entrenamiento y evaluación</h1>
-    <h3>Optimización</h3>
-    <ul>
-      <li>Función objetivo: <strong>MSE</strong>, entropía cruzada binaria...</li>
-      <li>Cálculo del gradiente: <strong>backpropagation</strong></li>
-      <li>Cálculo de actualizaciones: <strong>SGD</strong>, Adam, RMSProp, Adadelta...</li>
-    </ul>
-    <h3>Métricas</h3>
-    <div class="flex">
-      <div class="box secondary">
-        Error cuadrático medio
-        $$\text{MSE}(x,x')=\frac 1 n \sum_{i=1}^n (x_i - x'_i)^2$$
-      </div>
-      <div class="box secondary">
-        Raíz del ECM
-        $$\text{RMSE}(x,x')=\sqrt{\text{MSE}(x,x')}$$
-      </div>
-      <div class="box secondary">
-        Error absoluto medio
-        $$\text{MAE}(x,x')=\frac 1 n \sum_{i=1}^n \left\lvert{}x_i - x'_i\right\rvert$$
-      </div>
-      <div class="box secondary">
-        Error porcentual absoluto medio
-        $$\text{MAPE}(x,x')=\frac 1 n \sum_{i=1}^n \left\lvert{}\frac{x_i - x'_i}{x_i}\right\rvert$$
-      </div>
-    </div>
-  </section>
-
-  <section class="slide anchor-bottom" id="a1s8">
-    <h1>Comparación con otras técnicas</h1>
-    <div class="space"></div>
-    <ul class="incremental">
-      <li><strong>PCA</strong> genera solución idéntica al AE lineal optimizando ECM</li>
-      <li><strong>Análisis factorial</strong> supone variables (factores) ocultas, como el VAE</li>
-      <li><strong>LDA</strong> es supervisado, busca mejor separación de clases</li>
-      <li><strong>Kernel PCA</strong> varía según el kernel escogido</li>
-      <li><strong>Multidimensional scaling y Sammon mapping</strong> buscan preservar distancias relativas</li>
-      <li><strong>Isomap y LLE</strong> mantienen estructura local, similar a Contractive AE</li>
-      <li><strong>Restricted Boltzmann Machine</strong> es un modelo gráfico alternativo a AE para <i>pretraining</i></li>
-    </ul>
-    <div class="space"></div>
-    <div class="space"></div>
-  </section>
-
-  <div class="comment">
-    <ul>
-      <li>El análisis de componentes principales es una técnica exacta para encontrar un cambio de coordenadas en el espacio de forma que cada variable nueva explique la mayor varianza posible, sin tener correlación a las anteriores. El caso más simple, lineal del autoencoder, optimizando el error cuadrático medio, encuentra de forma aproximada la misma solución.</li>
-      <li>Análisis factorial es otra técnica lineal similar a PCA pero que se define suponiendo que hay unos factores ocultos que generan los datos. La filosofía es similar al autoencoder variacional, pero el planteamiento matemático es diferente.</li>
-      <li>El análisis discriminante lineal es una técnica lineal diferente porque sí recibe información de las clases de cada instancia, y trata de buscar una transformación lineal que las separe lo mejor posible. Una gran limitación que tiene es que el número de variables del espacio de llegada es el número de clases menos uno (p.ej. para clasificación binaria, solo genera una variable).</li>
-      <li>Existe una versión no lineal de PCA que utiliza kernels para llevarse las variables a otros espacios, y la transformación resultante depende directamente del kernel que se escoja.</li>
-      <li>Multidimensional scaling es una técnica para trasladar las distancias entre cada dos puntos a un espacio de una determinada dimensión. No se fija en las variables originales sino únicamente en las distancias entre muestras. Sammon mapping tiene un objetivo parecido pero las variables se van calculando iterativamente para optimizar su función objetivo y no siempre está asegurada la convergencia.</li>
-      <li>Isomap es una extensión de MDS que utiliza geodésicas en un grafo en lugar de distancias en línea recta, por lo que preserva toda la estructura local en lugar de solo distancias entre pares. LLE se presentó más o menos a la vez y su objetivo es parecido pero trabaja con los vecinos de cada punto.</li>
-      <li>Por último, las RBM son un modelo basado en un grafo que en su momento se usaba en lugar de los autoencoders para pre-entrenamiento de redes.</li>
-    </ul>
   </div>
 
-  <section class="slide" id="a1s9">
-    <h1>Guía de diseño de autoencoders</h1>
-    <div class="flex narrow">
-      <div>
-        <h3>Arquitectura</h3>
-        <ul>
-          <li>Número de capas</li>
-          <li>Número de unidades</li>
-          <li>Tipo de unidad <ul>
-            <li>Densa</li>
-            <li>Convolucional</li>
-            <li>LSTM</li>
-          </ul></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Función objetivo</h3>
-        <ul>
-          <li>Error reconstrucción <ul>
-            <li>Error cuadrático medio</li>
-            <li>Entropía cruzada</li>
-            <li>Correntropía</li>
-          </ul></li>
-          <li>Regularizaciones <ul>
-            <li>Sparsity</li>
-            <li>Contraction</li>
-            <li>Weight decay</li>
-          </ul></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Activaciones</h3>
-        <ul>
-          <li>\(\tanh~\to(-1,1)\)</li>
-          <li>Sigmoide\(~\to(0,1)\)</li>
-          <li>ReLU\(~\to[0,\infty)\)</li>
-          <li>SELU\(~\to(-\lambda\alpha,\infty)\)</li>
-          <li>Lineal\(~\to(-\infty,\infty)\)</li>
-          <li>...</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="slide cover clear" id="a4s1">
+  <div id="apli" class="slide cover clear">
     <img class="cover" src="images/fondo_portada.png"
     alt="Abstract nodes and connections" />
-    <div>
-      <h1>Aplicaciones de  autoencoders en aprendizaje de representaciones</h1>
-      <blockquote>
-        Charte, D., Charte, F., del Jesus, M. J., & Herrera, F. (2020). An analysis on the use of autoencoders for representation learning: Fundamentals, learning task case studies, explainability and challenges. <i>Neurocomputing</i>, 404, 93-107.
-      </blockquote>
-    </div>
-    <img class="preview" src="images/paper4.png">
-  </section>
-
-  <section class="slide" id="a4s2">
-    <h1>Motivación</h1>
-    <ul>
-      <li class=next>Antiguo uso de los AE: <strong>pre-entrenamiento</strong>, ahora innecesario</li>
-      <li class=next>Las variantes de AEs dan pie a codificaciones con diferentes propiedades</li>
-      <li class=next>¿Cuáles son los usos modernos de un AE?</li>
-    </ul>
-    <div class="flex">
-      <div class="box next">Visualización/embedding</div>
-      <div class="box next">Hashing semántico</div>
-      <div class="box next">Filtrado de ruido</div>
-      <div class="box next">Generación de instancias</div>
-      <div class="box next">Detección de anomalías</div>
-      <div class="box next secondary">Compresión de datos</div>
-      <div class="box next secondary">Transformación de dominio</div>
-      <div class="box next secondary">Superresolución</div>
-      <div class="box next secondary">Sistemas de recomendación</div>
-      <div class="box next secondary">Reconocimiento de poses/figuras</div>
-    </div>
-  </section>
-
-  <section class="slide" id="a4s3">
-    <h1>Visualización de datos</h1>
-    <p class="box secondary"><strong>Contractive AE</strong><br>
-    Alternativas: denoising, regularización embedding, manifold learning, t-SNE</p>
-    <img src="images/a4vis.png">
-    <div class="flex">
-      <p class="center">CPU Activity (21 variables)</p>
-      <p class="center">Satellite Image (36 variables)</p>
-    </div>
-  </section>
-
-  <section class="slide" id="a4s4">
-    <h1>Reducción de ruido</h1>
-    <div class="flex">
-      <div>
-        <p class="box secondary"><strong>Denoising AE</strong><br>Alternativas: robust AE</p>
-        <p></p>
-        <table class="second-right third-right">
-          <thead><tr>
-            <th>Imágenes</th><th>MSE</th><th>Reducción</th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td>Originales</td><td>0</td><td>100%</td>
-            </tr>
-            <tr>
-              <td>Ruidosas</td><td>1656.08</td><td>0%</td>
-            </tr>
-            <tr>
-              <td>Basic AE</td><td>576.68</td><td>62.14%</td>
-            </tr>
-            <tr>
-              <td>Denoising</td><td>159.74</td><td>88.94%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <img src="images/denoising-predictions.png" style="width:21em">
-    </div>
-  </section>
-
-  <section class="slide" id="a4s5">
-    <h1>Hashing semántico</h1>
-    <div class="flex">
-      <div>
-        Tarea similar a <i>clustering</i> donde cada clúster tiene un <strong>código asociado</strong>. Los códigos similares corresponden a clusters más parecidos entre sí.
-        <p class="box secondary"><strong>AE con regularización de ruido gaussiano</strong></p>
-      </div>
-      <img src="images/a4ham.png" style="width: 22em">
-    </div>
-  </section>
-
-  <section class="slide" id="a4s6">
-    <h1>Detección de anomalías</h1>
-    <p>Se detecta anomalía cuando el error de reconstrucción supera un umbral.</p>
-    <div class="box secondary anchor-right"><strong>Denoising AE</strong><span class="space"></span>Alternativas: AE básico, contractive AE, variational AE</div>
-    <img src="images/a4nom.png">
-  </section>
-
-  <section class="slide" id="a4s7">
-    <h1>Generación de instancias</h1>
-    <div class="flex">
-      <div>
-        <p>Se interpola en el espacio de codificación, generando siempre datos semánticamente válidos.</p>
-        <p class="box secondary"><strong>AE variacional</strong><br>Alternativas: AE adversarial</p>
-      </div>
-      <img src="images/variational-matrix.png" style="width: 22em">
-    </div>
-  </section>
-
-  <section class="slide anchor-bottom">
-    <h1>Perspectivas de explicabilidad</h1>
-    <ul class="incremental">
-      <li>Desentrelazado (<i>disentanglement</i>) de variables<sup>1</sup></li>
-      <li>Explicaciones sobre variables de entrada</li>
-      <li>ALIME: interpretabilidad local con AEs</li>
-    </ul>
-    <div class="space"></div>
-    <img src="images/tcvae.png" alt="Imágenes generadas por Total Correlation VAE">
-    <div class="space"></div>
-    <p class="citation"><sup>1</sup>Chen, R. T., Li, X., Grosse, R. B., & Duvenaud, D. K. (2018). Isolating sources of disentanglement in variational autoencoders. Advances in neural information processing systems, 31.</p>
-  </section>
-
-  <section class="slide cover clear" id="a2s1">
-    <img class="cover" src="images/fondo_portada.png"
-    alt="Abstract nodes and connections" />
-    <div>
-      <h1>Software para autoencoders en R: Ruta</h1>
-      <blockquote>
-        Charte, D., Herrera, F., & Charte, F. (2019). Ruta: Implementations of neural autoencoders in R. <i>Knowledge-Based Systems</i>, 174, 4-8.
-      </blockquote>
-    </div>
-    <img class="preview" src="images/paper2.png">
-  </section>
-
-  <section class="slide" id="a2s2">
-    <h1>Software previo para AEs</h1>
-    <div class="columns">
-      <div>
-        <b>Bibliotecas de cálculo tensorial</b> (PyTorch, Tensorflow)
-        <ul>
-          <li>Barrera de acceso: APIs complejas</li>
-          <li>Extracción de características difícil</li>
-          <li>Implementación manual de muchas funciones</li>
-        </ul><p></p>
-        <b>Implementaciones de autoencoders</b>
-        <ul>
-          <li>Autoencoder (R): básico/sparse</li>
-          <li>SAENET (R): sparse/stacked</li>
-          <li>H2O (Java/R): básico</li>
-          <li>yadlt (python): básico/denoising</li>
-        </ul>
-      </div>
-      <img src="images/tensorflowae.png" style="height: 20em">
-    </div><p></p>
-
-    <div class="box">Es necesaria una implementación <b>accesible y versátil</b> de autoencoders</div>
-  </section>
-
-  <section class="slide" id="a2s4">
-    <h1>Detalles de implementación</h1>
-    <ul>
-      <li>Lenguaje: <b>R</b></li>
-      <li>Biblioteca de cálculo: <b>Tensorflow/Keras</b></li>
-      <li>Repositorio oficial CRAN: <a href="https://cran.r-project.org/package=ruta">cran.r-project.org/package=ruta</a></li>
-      <li>Código fuente: <a href="https://github.com/fdavidcl/ruta">github.com/fdavidcl/ruta</a></li>
-      <li>Documentación: <a href="https://ruta.software">ruta.software</a></li>
-    </ul>
-    <div class="flex">
-      <div>
-        <b>Variantes de AE implementadas</b>
-        <ul class="flex ultranarrow">
-          <li>básico</li>
-          <li>sparse</li>
-          <li>contractive</li>
-          <li>denoising</li>
-          <li>robust</li>
-          <li>variational</li>
-        </ul>
-      </div>
-      <div>
-        <b>Tipos de capas</b>
-        <ul>
-          <li>densas</li>
-          <li>convolucionales (1D, 2D, 3D)</li>
-        </ul>
-      </div>
-      <div>
-        <img src="images/descargasruta.png" alt="Descargas acumuladas del paquete" style="height: 7em;">
-      </div>
-    </div>
-
-  </section>
-
-  <section class="slide" id="a2s3">
-    <h1>Arquitectura y funcionalidad</h1>
-    <h3>Clases definidas</h3>
-    <ul>
-      <li><code>ruta_autoencoder</code>: modelo de aprendizaje <br> puede <strong>entrenarse, codificar y reconstruir</strong></li>
-      <li><code>ruta_network</code>: estructura de capas neuronales <br>pueden <strong>concatenarse</strong></li>
-      <li><code>ruta_loss</code>: función a optimizar (interna a Keras o externa: correntropía)</li>
-      <li><code>ruta_noise</code>: un tipo de ruido aplicable a datos de entrada</li>
-    </ul>
-    <h3>Funcionalidades</h3>
-    <ul>
-      <li>Definir y personalizar aspectos de un modelo AE</li>
-      <li>Entrenar diferentes variantes de AE según varias funciones objetivo</li>
-      <li>Codificar y reconstruir datos</li>
-      <li>Evaluar un modelo con métricas de calidad</li>
-      <li>Muestrear modelos generativos (variacionales)</li>
-    </ul>
-
-  </section>
-
-  <section class="slide" id="a2s5">
-    <h1>Ejemplos de uso</h1>
-    <h3>Entrenamiento y codificación</h3>
-    <pre><code class="language-r">encoded &lt;- iris[, 1:4] %>% as.matrix() %>% autoencode(2, "robust")</code></pre>
-    <h3>Definición de una red, reconstrucción, evaluación</h3>
-    <pre><code class="language-r">learner &lt;- autoencoder_sparse(
-  input() + dense(3, "tanh") + output(),
-  "mean_squared_error"
-)
-model &lt;- train(learner, train_x, epochs = 200)
-reconstructions &lt;- reconstruct(model, test_x)
-evaluate_mean_squared_error(model, test_x)</code></pre>
-  </section>
-
-  <section class="slide" id="a2s6">
-    <h1>Ejemplo AE variacional</h1>
-    <pre><code class="language-r">network &lt;-
-  input() +
-  dense(256, "elu") +
-  variational_block(10, seed = 42) +
-  dense(256, "elu") +
-  output("sigmoid")
-learner &lt;- autoencoder_variational(network, loss = "binary_crossentropy")
-model &lt;- train(learner, x_train, epochs = 10)
-
-samples &lt;- model %>% 
-  generate(dimensions = c(8, 5), side = 6, fixed_values = 0.99)
-plot_matrix(samples)</code></pre>
-<img src="images/rutavariational.png" alt="Muestreo de dígitos de la codificación aprendida desde MNIST con un autoencoder variacional" style="height: 6em">
-  </section>
-
-
-  <section class="slide cover clear" id="a3s1">
-    <img class="cover" src="images/fondo_portada.png"
-    alt="Abstract nodes and connections" />
-    <div>
-      <h1>Problemas no estándares en aprendizaje supervisado</h1>
-      <blockquote>
-        Charte, D., Charte, F., García, S., & Herrera, F. (2019). A snapshot on nonstandard supervised learning problems: taxonomy, relationships, problem transformations and algorithm adaptations. <i>Progress in Artificial Intelligence</i>, 8(1), 1-14.
-      </blockquote>
-    </div>
-    <img class="preview" src="images/paper3.png">
-  </section>
-
-  <section class="slide" id="a3s2">
-    <h1>Taxonomía</h1>
-    <img src="images/nonstandard.png" alt="Nonstandard problems wheel">
-  </section>
-  <section class="slide" id="a3s3">
-    <h1>Taxonomía</h1>
-    <table class="scriptsize">
-      <thead>
-        <tr>
-          <th rowspan="2" class="right">Salidas</th>
-          <th colspan="2">Salida sin orden</th>
-          <th colspan="4">Salida ordenada</th>
-        </tr>
-        <tr>
-          <th rowspan="2" class="notfirst">Escalar</th>
-          <th rowspan="2">Múltiple</th>
-          <th colspan="2">Escalar</th>
-          <th colspan="2">Múltiple</th>
-        </tr>
-        <tr>
-          <th>Entradas</th>
-          <th class="notfirst">Discreta</th>
-          <th>Continua</th>
-          <th>Discreta</th>
-          <th>Continua</th>
-        </tr>
-      </thead>
-      <tr>
-        <th>Muestras sin orden</th>
-        <td>clas. estándar</td>
-        <td>clas. multietiqueta/ multi-dimensional</td>
-        <td>regr. ordinal</td>
-        <td>regr. estándar</td>
-        <td>clas. multietiqueta gradada</td>
-        <td>regr. multi-objetivo</td>
-      </tr>
-      <tr>
-        <th>Relación de orden</th>
-        <td>-</td>
-        <td>-</td>
-        <td>clas. monotónica</td>
-        <td>regr. isotónica</td>
-        <td>-</td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <th>Múltiples instancias</th>
-        <td>clas. multi-instancia</td>
-        <td>clas. MIML/MIMD</td>
-        <td>-</td>
-        <td>regr. multi-instancia</td>
-        <td>-</td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <th>Múltiples vistas</th>
-        <td>clas. multi-vista</td>
-        <td>clas. MVML/MVMD</td>
-        <td>-</td>
-        <td>regr. multi-vista</td>
-        <td>-</td>
-        <td>-</td>
-      </tr>
-    </table>
-    <div class="flex">
-      <div>
-        <h3>Otros casos</h3>
-        <ul>
-          <li>Salida es distribución de probabilidad: <strong>label distribution learning</strong></li>
-          <li>Salida es ranking: <strong>label ranking</strong></li>
-          <li>Predicción estructurada</li>
-        </ul></div>
-      <div>
-        <h3>Información parcial/ausente</h3>
-        <ul>
-          <li>Instancias sin etiquetar: <strong>semi-supervisado</strong>, <strong>positive-unlabeled</strong></li>
-          <li>Clases sin representación: <strong>one-class</strong>, <strong>positive-unlabeled</strong>, <strong>zero-shot</strong></li>
-          <li>Clases escasas: <strong>one-shot</strong></li>
-        </ul></div>
-    </div>
-  </section>
-  <section class="slide" id="a3s3">
-    <h1>Relaciones</h1>
-    <img src="images/supervised-relations.png" alt="Nonstandard problem generalizations">
-  </section>
-
-  <section class="slide" id="a3s4">
-    <h1>Tratamiento</h1>
-    
-    <table class="smallsize">
-      <thead>
-        <tr><th>Tarea</th>  <th>Transformación del problema</th>  <th>Adaptación de algoritmos</th> </tr>
-      </thead>
-      <tr><th>MI</th><td>Embedded-space </td><td> SVM <span class=spacer></span> Neural networks <span class=spacer></span> k-NN   </td></tr>
-      <tr><th>MV </th><td> Canonical correlation analysis </td><td> SVM <span class=spacer></span> Fisher discriminant analysis   </td></tr>
-      <tr> <th>ML </th><td> Binary Relevance <span class=spacer></span> Label Powerset <span class=spacer></span> Classifier chains </td><td> k-NN <span class=spacer></span> Decision trees <span class=spacer></span> SVM <span class=spacer></span> Association rules <span class=spacer></span> Ensembles   </td></tr>
-      <tr> <th>MD </th><td> Independent classifiers </td><td> Bayesian networks <span class=spacer></span> Maximum Entropy   </td></tr>
-      <tr> <th>LDL </th><td> Multiclass reduction </td><td> k-NN <span class=spacer></span> Neural networks   </td></tr>
-      <tr> <th>LR </th><td> Pairwise preferences <span class=spacer></span> Constraint classification </td><td> Boosting <span class=spacer></span> SVM <span class=spacer></span> Perceptron   </td></tr>
-      <tr> <th>MTR </th><td> ML-inspired: one-vs-all, stacking, regressor chains <span class=spacer></span> Support vectors </td><td> Generalizations <span class=spacer></span> Support vector regression <span class=spacer></span> Kernel-based <span class=spacer></span> Regression trees <span class=spacer></span> Random forests   </td></tr>
-      <tr> <th>OR </th><td> Ordered partitions <span class=spacer></span> One-vs-next, One-vs-followers, One-vs-previous <span class=spacer></span> 3-class problems </td><td> Neural networks <span class=spacer></span> Extreme learning machines <span class=spacer></span> Decision trees <span class=spacer></span> Gaussian processes <span class=spacer></span> AdaBoost   </td></tr>
-      <tr> <th>MC </th><td> Reduction to IR </td><td> k-NN <span class=spacer></span> Decision trees <span class=spacer></span> Decision rules <span class=spacer></span> Neural networks   </td></tr>
-    </table>
-  </section>
-
-  <section class="slide cover clear" id="a5s1">
-    <img class="cover" src="images/fondo_portada.png"
-    alt="Abstract nodes and connections" />
-    <div>
-      <h1>Nuevos modelos para reducir complejidad</h1>
-      <blockquote>
-        Charte, D., Charte, F., & Herrera, F. (2021). Reducing data complexity using autoencoders with class-informed loss functions. <i>IEEE Transactions on Pattern Analysis and Machine Intelligence</i>.
-      </blockquote>
-    </div>
-    <img class="preview" src="images/paper5.png">
-  </section>
-
-  <section class="slide" id="a5s2">
-    <h1>Complejidad de datos: fuentes</h1>
-    <h3>Solapamiento de clases</h3>
-    <div class="flex">
-      <div class="box secondary anchor-right"><strong>F1</strong><div class="space"></div>Max. Fisher's discriminant ratio</div>
-      <div class="box secondary anchor-right"><strong>F3</strong><div class="space"></div> Maximum feature efficiency</div>
-    </div>
-    <h3>Separabilidad y no linealidad</h3>
-    <div class="flex">
-      <div class="box secondary anchor-right"><strong>L2</strong><div class="space"></div>Linear classifier error</div>
-      <div class="box secondary anchor-right"><strong>L3</strong>
-      <div class="space"></div>Linear classifier nonlinearity</div>
-    </div>
-    <h3>Vecindarios y morfología</h3>
-    <div class="flex">
-      <div class="box secondary anchor-right"><strong>N3</strong><div class="space"></div>1NN classifier error</div>
-      <div class="box secondary anchor-right"><strong>ONB</strong>
-      <div class="space"></div>Number of balls to cover classes</div>
-    </div>
-    <h3>Dimensionalidad</h3>
-    <div class="flex">
-      <div class="box secondary anchor-right"><strong>T2</strong>
-      <div class="space"></div>Instances-to-features ratio</div>
-      <div class="phantom box"></div>
-    </div>
-  </section>
-
-  <section class="slide" id="a5s3">
-    <h1>Complejidad de datos: reducción</h1>
-    <div class="flex">
-      <div class="box secondary">Selección de características</div>
-      <div class="box secondary">Extracción de características</div>
-      <div class="box secondary">Aprendizaje de métricas de distancia</div>
-      <div class="box next">Autoencoders</div>
-    </div>
-    <ul class=next>
-      <li>Principal enfoque actual: reducir <strong>dimensionalidad</strong></li>
-      <li>Nuestro objetivo: abordar <strong>solapamiento/separabilidad</strong></li>
-      <li>Método: enriquecer la función objetivo con <strong>información de clase</strong></li>
-    </ul>
-    <div class="next">
-      
-    <h3>Diseño</h3>
-    <div class="flex" style="align-items: center;">
-      <div>
-        $$J(\theta;S)=\sum_{(x,y)\in S} \mathcal L(x, (g\circ f)(x)) + \lambda\Omega(\theta;S)$$
-      </div>
-      <div class="flex next">
-        <div class="box secondary anchor-right">Scorer <div class="space"></div> métrica F1</div>
-        <div class="box secondary anchor-right">Skaler<div class="space"></div>divergencia KL</div>
-        <div class="box secondary anchor-right">Slicer<div class="space"></div>objetivo LSSVM</div>
-      </div>
-    </div>
-    </div>
-  </section>
-  
-
-  <section class="slide" id="a5s4">
-    <h1>Scorer</h1>
-    <h3>Definición</h3>
-    <ul>
-      <li>Promedios de las codificaciones para cada clase:
-        $$\mu_j^+ = \frac 1 {N^+} \sum_{(x,+1)\in S} f(x)_j,\quad \mu_j^- = \frac 1 {N^-} \sum_{(x,-1)\in S} f(x)_j$$
-    </li>
-      <li>Desviaciones de las codificaciones para cada clase:
-        $$\sigma_j^+ = \left[\frac 1 {N^+} \sum_{(x,+1)\in S} f(x)_j^2\right] - (\mu_j^+)^2,\quad\sigma_j^+ = \left[\frac 1 {N^-} \sum_{(x,-1)\in S} f(x)_j^2\right] - (\mu_j^-)^2 $$
-      </li>
-      <li>
-        Cálculo del ratio de Fisher medio:
-        $$F=\frac{1}{n_f}\sum_{j=1}^{n_f} \frac{(\mu_j^+-\mu_j^-)^2}{\sigma_j^++\sigma_j^-},\quad\Omega(\theta;S)=\frac{1}{1 + F}\in(0,1)$$
-      </li>
-    </ul>
-  </section>
-
-  <section class="slide" id="a5s5">
-    <div class="flex">
-      <div class=anchor-bottom>
-        <h1>Skaler</h1>
-        <div class="space"></div>
-        <h3>Definición</h3>
-      </div>
-    </div>
-    <div>
-      <p>$$\Omega(\theta;S)=- \sum_{j=1}^{d}\left[P_+(j)~ \log\frac{P_+(j)}{P_-(j)} + H(j)\right]$$</p>
-      
-      <p>donde \(P_+(j)\) indica la probabilidad de que la \(j\)-ésima variable <strong>tenga el valor más alto</strong> en las instancias positivas (y \(P_-(j)\) lo análogo para negativas):</p>
-      
-      <p>$$ P_+(j)=\operatorname{softmax}\left(\frac{1}{N^{+}}\sum_{(x,+1)\in S}f(x)\right)(j)~,\quad  P_-(j)=\operatorname{softmax}\left(\frac{1}{N^{-}}\sum_{(x,-1)\in S}f(x)\right)(j)$$</p>
-      
-      <p>$$H(j)=-\left(P(j=0)~\log(P(j=0)) + P(j=1)~\log(P(j=1))\right) $$</p>
-    </div>
-  </section>
-
-  <section class="slide anchor-bottom" id="a5s6">
-    <h1>Slicer</h1>
-    <h3>Definición</h3>
-    <ul>
-      <li>Parámetros extra a optimizar: \(w\) y \(b\)</li>
-      <li>Regularización inspirada en <strong>least-squares SVM</strong></li>
-    </ul>
-    
-    $$\Omega(\theta;S)=\frac 1 2 \left\Vert w\right\Vert^2+\frac \beta 2\sum_{(x,y)\in S}\left(1 - y\left(w^Tf(x)+b\right)\right)^2$$
-    <div class="space"></div>
-    <img src="images/slicer.png" alt="Modelo Slicer" style="height: 10em">
-  </section>
-
-  <section class="slide" id="a5s7">
-    <h1>Marco experimental: datasets</h1>
-    <div class="flex narrow">
-      <div class="box secondary">Appendicitis</div>
-      <div class="box secondary">Arcene</div>
-      <div class="box secondary">Australian</div>
-      <div class="box secondary">Bioresponse</div>
-      <div class="box secondary">Christine</div>
-      <div class="box secondary">Dexter</div>
-      <div class="box secondary">Gina</div>
-      <div class="box secondary">Gisette</div>
-      <div class="box labels-grouped">Human Act Rec</div>
-      <div class="box secondary">Hill Valley</div>
-      <div class="box labels-onvsall">Indian (corn)</div>
-      <div class="box labels-onvsall">Indian (soybeans)</div>
-      <div class="box secondary">Ionosphere</div>
-      <div class="box labels-grouped">Isolet (vowels)</div>
-      <div class="box secondary">Jasmine</div>
-      <div class="box secondary">Madelon</div>
-      <div class="box labels-grouped">MFeatFactors (odd)</div>
-      <div class="box labels-grouped">MFeatPixel (odd)</div>
-      <div class="box labels-grouped">Satellite (grey)</div>
-      <div class="box multilabel">Scene (beach)</div>
-      <div class="box multilabel">Scene (sunset)</div>
-      <div class="box multilabel">Scene (fall)</div>
-      <div class="box multilabel">Scene (field)</div>
-      <div class="box multilabel">Scene (mountain)</div>
-      <div class="box multilabel">Scene (urban)</div>
-      <div class="box secondary">Sonar</div>
-      <div class="box transparent">
-        <ul class="flex scriptsize legend left">
-          <li class="secondary">Binario</li>
-          <li class="labels-grouped">Clases agrupadas</li>
-          <li class="labels-onvsall">One-vs-all</li>
-          <li class="multilabel">Multietiqueta</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-  <section class="slide" id="a5s8">
-    <h1>Marco experimental</h1>
-    <div class="flex narrow">
-      <div><h3>Métodos</h3><ul>      
-        <li>PCA</li>
-        <li>LLE</li>
-        <li>Isomap</li>
-        <li>AE básico</li>
-        <li>Scorer</li>
-        <li>Skaler</li>
-        <li>Slicer</li>
-      </ul></div>
-      <div><h3>Métricas</h3><ul>
-        <li>F1 (Fisher)</li>
-        <li>F3 (efficiency)</li>
-        <li>ONB (total)</li>
-        <li>ONB (average)</li>
-        <li>L2 (clas. lineal)</li>
-        <li>L3 (linealidad)</li>
-        <li>N3 (clas. 1NN)</li>
-        <li>Para SVM, kNN, MLP:
-          <ul>
-            <li>Fscore</li>
-            <li>AUC</li>
-            <li>Kappa</li>
-          </ul>
-        </li>
-      </ul></div>
-      <div><h3>Parámetros</h3><ul>
-        <li>Dimensión: \(\max\{\min\{\sqrt d, \frac{n}{10}\},2\}\)</li>
-        <li>Épocas: 200</li>
-        <li>Capas ocultas: 1 o 3</li>
-        <li>Activación: ReLU, Sigmoide (Skaler)</li>
-        <li>Peso Scorer: 0.01</li>
-        <li>Peso Skaler: 0.1</li>
-        <li>Peso Slicer: 1</li>
-        <li>Error reconstrucción: entropía cruzada</li>
-      </ul></div>
-    </div>
-  </section>
-    
-  <section class="slide" id="a5s9">
-    <h1>Resultados: rankings</h1>  
-    <table class="smallsize all-right first-left">
-<thead><tr>  <th></th><th>                             </th><th> PCA                        </th><th> LLE                </th><th> Isomap </th><th> AE                </th><th> Skaler                      </th><th> Scorer </th><th> Slicer </td></tr></thead>
-<tr>    <td colspan=2> F1                          </td><td> \(\otimes\) 5.885          </td><td> \(\otimes\) 6.115  </td><td> \(\otimes\) 5.731  </td><td> \(\otimes\) 4.038 </td><td> \(\bigstar\) <b>1.577</b> </td><td> 2.308              </td><td> 2.346 </td></tr>
-<tr>    <td colspan=2> F3                          </td><td> \(\otimes\) 4.250          </td><td> \(\otimes\) 5.231  </td><td> \(\otimes\) 4.846  </td><td> \(\otimes\) 5.654 </td><td> 2.788                                   </td><td> 3.000              </td><td> \(\bigstar\) <b>2.231</b> </td></tr>
-<tr>    <td colspan=2> N3                          </td><td> \(\otimes\) 4.692          </td><td> \(\otimes\) 5.173  </td><td> \(\otimes\) 5.308  </td><td> \(\times\) 4.269  </td><td> 3.654                                   </td><td> 2.577              </td><td> \(\bigstar\) <b>2.327</b> </td></tr>
-<tr>    <td colspan=2> L2                          </td><td> \(\bigstar\) <b>2.712</b> </td><td> \(\times\) 4.519   </td><td> 3.981              </td><td> \(\otimes\) 5.654 </td><td> \(\times\) 4.442                        </td><td> 3.846              </td><td> 2.846 </td></tr>
-<tr>    <td colspan=2> L3                          </td><td> 2.769                      </td><td> \(\times\) 4.500   </td><td> 4.115              </td><td> \(\otimes\) 5.500 </td><td> \(\otimes\) 4.923                       </td><td> 3.654              </td><td> \(\bigstar\) <b>2.538</b> </td></tr>
-<tr>    <td colspan=2> \(\textit{ONB}_{\text{tot}}\) </td><td> \(\otimes\) 4.481          </td><td> \(\otimes\) 6.115  </td><td> \(\otimes\) 4.519  </td><td> \(\otimes\) 4.481 </td><td> 3.442                                   </td><td> 3.019              </td><td> \(\bigstar\) <b>1.942</b> </td></tr>
-<tr>    <td colspan=2> \(\textit{ONB}_{\text{avg}}\) </td><td> \(\otimes\) 4.442          </td><td> \(\otimes\) 6.077  </td><td> \(\otimes\) 4.519  </td><td> \(\otimes\) 4.577 </td><td> \(\times\) 3.538                        </td><td> 2.904              </td><td> \(\bigstar\) <b>1.942</b> </td></tr>
-<tr><th rowspan=3 class="rotate90">kNN </th><th class="unpad">F-score                     </th><td> 3.096                      </td><td> \(\otimes\) 6.923  </td><td> \(\otimes\) 4.904  </td><td> 4.115             </td><td> 3.519                                   </td><td> 3.231              </td><td> \(\bigstar\) <b>2.212</b> </td></tr>
-<tr>    <th> AUC                         </th><td> 3.288                      </td><td> \(\otimes\) 7.000  </td><td> \(\otimes\) 4.750  </td><td> \(\times\) 4.038  </td><td> 3.500                                   </td><td> 3.250              </td><td> \(\bigstar\) <b>2.173</b> </td></tr>
-<tr>    <th> Kappa                       </th><td> 3.096                      </td><td> \(\otimes\) 7.000  </td><td> \(\otimes\) 4.827  </td><td> \(\times\) 4.038  </td><td> 3.558                                   </td><td> 3.346              </td><td> \(\bigstar\) <b>2.135</b> </td></tr>
-<tr><th rowspan=3 class="rotate90">SVM </th><th class="unpad">F-score                     </th><td> 3.788                      </td><td> \(\otimes\) 6.846  </td><td> \(\otimes\) 4.673  </td><td> 3.538             </td><td> 3.538                                   </td><td> 2.923              </td><td> \(\bigstar\) <b>2.692</b></td></tr>
-<tr>    <th> AUC                         </th><td> \(\times\) 4.000           </td><td> \(\otimes\) 6.846  </td><td> \(\otimes\) 4.865  </td><td> 3.462             </td><td> 3.346                                   </td><td> 2.962              </td><td> \(\bigstar\) <b>2.519</b> </td></tr>
-<tr>    <th> Kappa                       </th><td> 3.904                      </td><td> \(\otimes\)  6.846 </td><td> \(\otimes\) 4.827  </td><td> 3.346             </td><td> 3.577                                   </td><td> 2.962              </td><td> \(\bigstar\) <b>2.538</b></td></tr>
-<tr><th rowspan=3 class="rotate90">MLP</th><th class="unpad">F-score                     </th><td> \(\otimes\) 4.077          </td><td> \(\otimes\) 6.769  </td><td> \(\otimes\) 3.962  </td><td> \(\otimes\) 4.731 </td><td> 2.596                                   </td><td> \(\otimes\) 3.865  </td><td> \(\bigstar\) <b>2.000</b> </td></tr>
-<tr>    <th> AUC                         </th><td> \(\otimes\) 4.000          </td><td> \(\otimes\) 7.000  </td><td> \(\otimes\) 4.058  </td><td> \(\otimes\) 4.635 </td><td> 2.404                                   </td><td> \(\otimes\) 3.942  </td><td> \(\bigstar\) <b>1.962</b> </td></tr>
-<tr>    <th> Kappa                       </th><td> \(\otimes\) 4.000          </td><td> \(\otimes\) 7.000  </td><td> \(\otimes\) 4.077  </td><td> \(\otimes\) 4.596 </td><td> 2.558                                   </td><td> \(\otimes\) 3.827  </td><td> \(\bigstar\) <b>1.942</b> </td></tr>
-<tr>    <td colspan=2> wins                        </td><td> 62                         </td><td> 10                 </td><td> 17                 </td><td> 19                </td><td> 78                                      </td><td> 64                 </td><td> <b> 188</b> </td></tr>
-</table>
-  </section>
-
-  <section class="slide" id="a5s10">
-    <h1>Resultados: critical distance</h1>
-    
-    <img src="images/cdp.png" alt="Critical distance plot" style="width:30em;">
-
-    <h3>Resultados completos</h3>
-    <a href="https://ari-dasci.github.io/S-reducing-complexity">ari-dasci.github.io/S-reducing-complexity</a>
-  </section>
-
-  <section class="slide cover clear" id="conclusiones">
-    <img class="cover" src="images/fondo_portada.png"
-    alt="Abstract nodes and connections" />
-    <h1>Comentarios finales</h1>
-  </section>
-
-  <section class="slide  clear" id="dash">
-    <img src="images/dashboard.png" alt="Dashboard" class="">
-  </section>
-
-  <section class="slide anchor-bottom" id="res">
-    <h1>Resultados obtenidos</h1>
-    <div class="space"></div>
-    <div class="flex narrow">
-      <div class="box secondary next">Estudio del estado del arte</div>
-      <div class="box secondary next">Desarrollo de implementaciones</div>
-      <div class="box secondary next">Análisis de problemas supervisados</div>
-      <div class="box next">Nuevos modelos para transformar variables a espacios que consiguen mejor separabilidad de clases</div>
-    </div>
-    <div class="space"></div>
-    <div class="space"></div>
-  </section>
-
-  <section class="slide" id="pubs">
-    <h1>Otras publicaciones</h1>
-    <div class="flex nogap">
-    <div class="citation">A tutorial on the segmentation of metallographic images: Taxonomy, new MetalDAM dataset, deep learning-based ensemble model, experimental analysis and challenges. <i>Information Fusion</i> (2022)</div>
-    <div class="citation">Revisiting data complexity metrics based on morphology for overlap and imbalance: snapshot, new overlap number of balls metrics and singular problems prospect. <i>Knowledge and Information Systems</i> (2021)</div>
-    <div class="citation">COVIDGR dataset and COVID-SDNet methodology for predicting COVID-19 based on chest X-ray images. <i>IEEE journal of biomedical and health informatics</i> (2020)</div>
-    <div class="citation">Artificial intelligence within the interplay between natural and artificial computation: Advances in data science, trends and applications. <i>Neurocomputing</i> (2020)</div>
-    <div class="citation">Tips, guidelines and tools for managing multi-label datasets: The mldr. datasets R package and the Cometa data repository. <i>Neurocomputing</i> (2018)</div>
-    <div class="citation">Working with Multilabel Datasets in R: The mldr Package. <i>The R Journal</i> (2015)</div>
-    <div class="citation conference">Slicer: Feature Learning for Class Separability with Least-Squares Support Vector Machine Loss and COVID-19 Chest X-Ray Case Study. <i>HAIS 2021</i></div>
-    <div class="citation conference">A showcase of the use of autoencoders in feature learning applications. <i>IWINAC 2019</i></div>
+    <h1>Aplicaciones</h1>
   </div>
-  </section>
 
-  <section class="slide anchor-bottom" id="trfut">
-    <h1>Trabajo futuro</h1>
-    <div class="space"></div>
-    <div class="flex">
-      <div class="box secondary next">Extensión de los nuevos modelos a problemas no estándares (en proceso: multietiqueta)</div>
-      <div class="box secondary next">Integración de regularizaciones para explicabilidad (<i>disentanglement</i>)</div>
-      <div class="box secondary next">Modelos generativos para <i>resampling</i> con instancias sintéticas</div>
-      <div class="box secondary next">Transformaciones entre problemas no estándares (de multi-vista a vista única)</div>
+  <div id="apli1" class="slide">
+    <h1>Algunas aplicaciones</h1>
+    <div class="flex incremental stretch">
+      <div class="box secondary">
+        <p><strong>Ámbito industrial</strong></p>
+        <ul class="left">
+          <li>Control de calidad</li>
+          <li>Análisis de materiales</li>
+        </ul>
+      </div>
+      <div class="box secondary">
+        <p><strong>Medicina</strong></p>
+        <ul class="left">
+          <li>Asistencia al diagnóstico: TACs, resonancias, radiografías</li>
+        </ul>
+      </div>
+      <div class="box secondary">
+        <img src="images/recaptcha.png" alt="ReCAPTCHA de Google" style="height: 12rem; float: right;">
+        <p><strong>Transporte</strong></p>
+        <ul class="left">
+          <li>Vehículos autónomos</li>
+        </ul>
+      </div>
+      <div class="box secondary">
+        <p><strong>Redes sociales</strong></p>
+        <ul class="left">
+          <li>Etiquetado de personas</li>
+          <li>Detección de lugares</li>
+          <li>Detección de contenido no permitido</li>
+        </ul>
+      </div>
     </div>
-    <div class="space"></div>
-    <div class="space"></div>
-  </section>
+  </div>
 
-  <section class="cover slide clear titleslide flex" id=cover2>
-    <div class="left-side vertical-logo">
-        <span></span>
-        <img src="images/logo_neg.png">
-    </div>
-    <div class="right-side">
-      <img class="cover" src="images/fondo_portada.png"
-      alt="Abstract nodes and connections" />
-      <h1>
-        Mejoras en tratamiento de <br>
-        <span class="larger">problemas de clasificación</span><br>
-        con modelos basados en <br>
-        <span class="largest"><i>autoencoders</i></span>
-      </h1>
-      <p class="subtitle">Tesis para la obtención del título de doctor por
-        la Universidad de Granada</p>
-      <p class="institution">Programa de Doctorado en Tecnologías de la
-        Información y la Comunicación<br>&nbsp;</p>
-      <p class="author">Francisco David Charte Luque
-        <a href="mailto:fdavidcl@ugr.es" >&lt;fdavidcl@ugr.es&gt;</a></p>
-      <p class="supervisors">
-        <span class="subtitle">Directores:</span><br>
-          Francisco Herrera Triguero<br>
-          Francisco Charte Ojeda
+  <div id="apli2" class="slide anchor-bottom">
+    <h1>Casos de aplicación</h1>
+    <div class="space"></div>
+    <div class="box secondary">
+      <strong>Detección de COVID en radiografías</strong>
+      <p>
+        <i>COVIDGR Dataset and COVID-SDNet Methodology for Predicting COVID-19 Based on Chest X-Ray Images</i>. 
+        S Tabik, A Gomez-Rios, J L Martin-Rodriguez, I Sevillano-Garcia, M Rey-Area, D Charte, E Guirado, J L Suarez, J Luengo, M A Valero-Gonzalez, P Garcia-Villanova, E Olmedo-Sanchez, F Herrera. <a href="https://doi.org/10.1109/jbhi.2020.3037127">10.1109/jbhi.2020.3037127</a>
       </p>
-      <p class=note>6 de julio de 2022<br>
     </div>
-  </section>
-
-  <div class="slide cover clear noshow" id="apendice">
-    <img class="cover" src="images/fondo_portada.png"
-    alt="Abstract nodes and connections" />
-    <h1>Apéndice</h1>
+    <div class="space"></div>
+    <div class="box secondary">
+      <strong>Identificación de fases del acero</strong>
+      <p>
+        <i>A tutorial on the segmentation of metallographic images: Taxonomy, new
+          MetalDAM dataset, deep learning-based ensemble model, experimental
+          analysis and challenges</i>
+          J Luengo, R Moreno, I Sevillano, D Charte, A Peláez-Vegas,
+          M Fernández-Moreno, P Mesejo, F Herrera <a href="https://doi.org/10.1016/j.inffus.2021.09.018">10.1016/j.inffus.2021.09.018</a>
+      </p>
+    </div>
+    <div class="space"></div>
   </div>
 
-  <div class="slide noshow" id="ap2">
-    <h1>Resultados: critical distance plots</h1>
-    <img src="images/cdpall.png" alt="Critical distance plots">
-  </div>
-  <div class="slide noshow" id="ap3">
-    <h1>Resultados: joyplots</h1>
-    <img src="images/joyplots1.png" alt="Joyplots">
-  </div>
-  <div class="slide noshow" id="ap4">
-    <h1>Resultados: joyplots</h1>
-    <img src="images/joyplots2.png" alt="Joyplots">
+  <div id="apli3" class="slide">
+    <h1>Detección de COVID en radiografías</h1>
+    <img src="images/covid1.png" alt="Severidad de síntomas en radiografías">
   </div>
 
-  <div class="slide noshow" id="ap0">
-    <h1>Colaboraciones</h1>
-    <div class="citation">Luengo, J., Moreno, R., Sevillano, I., Charte, D., Peláez-Vegas, A., Fernández-Moreno, M., ... & Herrera, F. (2022). A tutorial on the segmentation of metallographic images: Taxonomy, new MetalDAM dataset, deep learning-based ensemble model, experimental analysis and challenges. Information Fusion, 78, 232-253.</div>
-    <div class="citation">Pascual-Triana, J. D., Charte, D., Andrés Arroyo, M., Fernández, A., & Herrera, F. (2021). Revisiting data complexity metrics based on morphology for overlap and imbalance: snapshot, new overlap number of balls metrics and singular problems prospect. Knowledge and Information Systems, 63(7), 1961-1989.</div>
-    <div class="citation">Tabik, S., Gómez-Ríos, A., Martín-Rodríguez, J. L., Sevillano-García, I., Rey-Area, M., Charte, D., ... & Herrera, F. (2020). COVIDGR dataset and COVID-SDNet methodology for predicting COVID-19 based on chest X-ray images. IEEE journal of biomedical and health informatics, 24(12), 3595-3605.</div>
-    <div class="citation">Górriz, J. M., Ramírez, J., Ortíz, A., Martínez-Murcia, F. J., Segovia, F., Suckling, J., ... & Ferrández, J. M. (2020). Artificial intelligence within the interplay between natural and artificial computation: Advances in data science, trends and applications. Neurocomputing, 410, 237-270.</div>
-    
-    <div class="citation">Charte, F., Rivera, A. J., Charte, D., del Jesus, M. J., & Herrera, F. (2018). Tips, guidelines and tools for managing multi-label datasets: The mldr. datasets R package and the Cometa data repository. Neurocomputing, 289, 68-85.</div>
-
+  <div id="apli3" class="slide">
+    <h1>Modelo base</h1>
+    <img src="images/resnet50.png" alt="Modelo ResNet-34">
   </div>
-
-  <div class="slide noshow" id="ap1">
-    <h1>Sobre los nombres</h1>
-    <ul>
-      <li>Ruta: R unsupervised deep architectures</li>
-      <li>Scorer: Supervised COmplexity REduction</li>
-      <li>Skaler: Supervised KullbAck-LeiblEr Reduction</li>
-      <li>Slicer: Supervised LInear Classifier Error Reduction</li>
-    </ul>
-  </div>
-
--->
 
   <script>
     (function() {
